@@ -13,13 +13,18 @@ namespace CoreSolution.WebApi.Interceptor
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            string token = context.HttpContext.Request.Query["token"];
+            string token = context.HttpContext.Request.Headers["token"];
+            if (string.IsNullOrWhiteSpace(token) || await LoginManager.GetUserIdAsync(token) == null)
+            {
+                context.Result = AjaxHelper.JsonResult(HttpStatusCode.Unauthorized, "未登录");
+            }
+            /*string token = context.HttpContext.Request.Query["token"];
             long? userId = await LoginManager.GetUserIdAsync(token);
             if (userId == null)
             {
                 context.Result = AjaxHelper.JsonResult(HttpStatusCode.Unauthorized, "未登录");
 
-            }
+            }*/
             await base.OnActionExecutionAsync(context, next);
         }
     }

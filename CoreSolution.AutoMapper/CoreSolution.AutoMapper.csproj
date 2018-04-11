@@ -9,9 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreSolution.AutoMapper\CoreSolution.AutoMapper.csproj" />
     <ProjectReference Include="..\CoreSolution.Domain\CoreSolution.Domain.csproj" />
-    <ProjectReference Include="..\CoreSolution.EntityFrameworkCore\CoreSolution.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\CoreSolution.Dto\CoreSolution.Dto.csproj" />
   </ItemGroup>
 
 </Project>

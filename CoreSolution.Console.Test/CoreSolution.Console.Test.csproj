@@ -6,7 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="autofac.configuration" Version="4.0.1" />
+    <PackageReference Include="automapper" Version="6.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreSolution.AutoMapper\CoreSolution.AutoMapper.csproj" />
+    <ProjectReference Include="..\CoreSolution.Domain\CoreSolution.Domain.csproj" />
+    <ProjectReference Include="..\CoreSolution.Dto\CoreSolution.Dto.csproj" />
     <ProjectReference Include="..\CoreSolution.EntityFrameworkCore\CoreSolution.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\CoreSolution.IService\CoreSolution.IService.csproj" />
+    <ProjectReference Include="..\CoreSolution.Service\CoreSolution.Service.csproj" />
   </ItemGroup>
 
 </Project>

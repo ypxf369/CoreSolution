@@ -11,7 +11,7 @@ namespace CoreSolution.Repository
     public interface IRepository
     {
     }
-    public interface IRepository<TEntity> : IRepository<TEntity, int> where TEntity : class, IEntity<int>
+    public interface IRepository<TEntity,TEntityDto> : IRepository<TEntity, TEntityDto, int> where TEntity : class, IEntity<int>
     {
 
     }
@@ -20,8 +20,9 @@ namespace CoreSolution.Repository
     /// 泛型Repository
     /// </summary>
     /// <typeparam name="TEntity">Entity</typeparam>
+    /// <typeparam name="TEntityDto">EntityDto</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : class, IEntity<TPrimaryKey>
+    public interface IRepository<TEntity, TEntityDto, TPrimaryKey> : IRepository where TEntity : class, IEntity<TPrimaryKey>
     {
         #region Select/Get/Query
 
@@ -41,28 +42,28 @@ namespace CoreSolution.Repository
         /// <summary>
         /// List-GetAll
         /// </summary>
-        /// <returns>List Entity</returns>
-        List<TEntity> GetAllList();
+        /// <returns>List EntityDto</returns>
+        List<TEntityDto> GetAllList();
 
         /// <summary>
         /// List-GetAll
         /// </summary>
-        /// <returns>List Entity</returns>
-        Task<List<TEntity>> GetAllListAsync();
-
-        /// <summary>
-        /// List-GetAll
-        /// </summary>
-        /// <param name="predicate">条件</param>
-        /// <returns>List Entity</returns>
-        List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate);
+        /// <returns>List EntityDto</returns>
+        Task<List<TEntityDto>> GetAllListAsync();
 
         /// <summary>
         /// List-GetAll
         /// </summary>
         /// <param name="predicate">条件</param>
-        /// <returns>List Entity</returns>
-        Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
+        /// <returns>List EntityDto</returns>
+        List<TEntityDto> GetAllList(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// List-GetAll
+        /// </summary>
+        /// <param name="predicate">条件</param>
+        /// <returns>List EntityDto</returns>
+        Task<List<TEntityDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// Query
@@ -76,60 +77,60 @@ namespace CoreSolution.Repository
         /// 根据主键获得一个实体
         /// </summary>
         /// <param name="id">主键id</param>
-        /// <returns>Entity</returns>
-        TEntity Get(TPrimaryKey id);
+        /// <returns>EntityDto</returns>
+        TEntityDto Get(TPrimaryKey id);
 
         /// <summary>
         /// 根据主键获得一个实体
         /// </summary>
         /// <param name="id">主键id</param>
-        /// <returns>Entity</returns>
-        Task<TEntity> GetAsync(TPrimaryKey id);
+        /// <returns>EntityDto</returns>
+        Task<TEntityDto> GetAsync(TPrimaryKey id);
 
         /// <summary>
-        /// 根据条件获得Single Entity
+        /// 根据条件获得Single EntityDto
         /// </summary>
         /// <param name="predicate">lambda</param>
-        TEntity Single(Expression<Func<TEntity, bool>> predicate);
+        TEntityDto Single(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        /// 根据条件获得Single Entity
+        /// 根据条件获得Single EntityDto
         /// </summary>
         /// <param name="predicate">lambda</param>
-        Task<TEntity> SingleAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntityDto> SingleAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// 根据主键获得FirstOrDefault EntityDto
+        /// </summary>
+        /// <param name="id">主键id</param>
+        /// <returns>EntityDto or null</returns>
+        TEntityDto FirstOrDefault(TPrimaryKey id);
 
         /// <summary>
         /// 根据主键获得FirstOrDefault Entity
         /// </summary>
         /// <param name="id">主键id</param>
-        /// <returns>Entity or null</returns>
-        TEntity FirstOrDefault(TPrimaryKey id);
+        /// <returns>EntityDto or null</returns>
+        Task<TEntityDto> FirstOrDefaultAsync(TPrimaryKey id);
 
         /// <summary>
-        /// 根据主键获得FirstOrDefault Entity
-        /// </summary>
-        /// <param name="id">主键id</param>
-        /// <returns>Entity or null</returns>
-        Task<TEntity> FirstOrDefaultAsync(TPrimaryKey id);
-
-        /// <summary>
-        /// 根据条件获得FirstOrDefault Entity
+        /// 根据条件获得FirstOrDefault EntityDto
         /// </summary>
         /// <param name="predicate">lambda</param>
-        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        TEntityDto FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        /// 根据条件获得FirstOrDefault Entity
+        /// 根据条件获得FirstOrDefault EntityDto
         /// </summary>
         /// <param name="predicate">lambda</param>
-        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntityDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 在没有数据库访问的情况下创建具有给定主键的实体。
         /// </summary>
         /// <param name="id">主键id</param>
-        /// <returns>Entity</returns>
-        TEntity Load(TPrimaryKey id);
+        /// <returns>EntityDto</returns>
+        TEntityDto Load(TPrimaryKey id);
 
         #endregion
 
@@ -138,54 +139,54 @@ namespace CoreSolution.Repository
         /// <summary>
         /// 插入一个Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        TEntity Insert(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        TEntityDto Insert(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        Task<TEntity> InsertAsync(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        Task<TEntityDto> InsertAsync(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity并获得Id
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entityDto">EntityDto</param>
         /// <returns>Id</returns>
-        TPrimaryKey InsertAndGetId(TEntity entity);
+        TPrimaryKey InsertAndGetId(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity并获得Id
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entityDto">EntityDto</param>
         /// <returns>Id</returns>
-        Task<TPrimaryKey> InsertAndGetIdAsync(TEntity entity);
+        Task<TPrimaryKey> InsertAndGetIdAsync(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity或者根据Id更新
         /// </summary>
-        /// <param name="entity">Entity</param>
-        TEntity InsertOrUpdate(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        TEntityDto InsertOrUpdate(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity或者根据Id更新
         /// </summary>
-        /// <param name="entity">Entity</param>
-        Task<TEntity> InsertOrUpdateAsync(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        Task<TEntityDto> InsertOrUpdateAsync(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity或者根据Id更新并返回Id
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entityDto">EntityDto</param>
         /// <returns>Id</returns>
-        TPrimaryKey InsertOrUpdateAndGetId(TEntity entity);
+        TPrimaryKey InsertOrUpdateAndGetId(TEntityDto entityDto);
 
         /// <summary>
         /// 插入一个Entity或者根据Id更新并返回Id
         /// </summary>
-        /// <param name="entity">Entity</param>
+        /// <param name="entityDto">EntityDto</param>
         /// <returns>Id</returns>
-        Task<TPrimaryKey> InsertOrUpdateAndGetIdAsync(TEntity entity);
+        Task<TPrimaryKey> InsertOrUpdateAndGetIdAsync(TEntityDto entityDto);
 
         #endregion
 
@@ -194,14 +195,14 @@ namespace CoreSolution.Repository
         /// <summary>
         /// 更新现有的Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        TEntity Update(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        TEntityDto Update(TEntityDto entityDto);
 
         /// <summary>
         /// 更新现有的Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        Task<TEntity> UpdateAsync(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        Task<TEntityDto> UpdateAsync(TEntityDto entityDto);
 
         /// <summary>
         /// 更新现有的Entity
@@ -209,7 +210,7 @@ namespace CoreSolution.Repository
         /// <param name="id">Id</param>
         /// <param name="updateAction">change entity</param>
         /// <returns></returns>
-        TEntity Update(TPrimaryKey id, Action<TEntity> updateAction);
+        TEntityDto Update(TPrimaryKey id, Action<TEntityDto> updateAction);
 
         /// <summary>
         /// 更新现有的Entity
@@ -217,7 +218,7 @@ namespace CoreSolution.Repository
         /// <param name="id">Id of the entity</param>
         /// <param name="updateAction"></param>
         /// <returns></returns>
-        Task<TEntity> UpdateAsync(TPrimaryKey id, Func<TEntity, Task> updateAction);
+        Task<TEntityDto> UpdateAsync(TPrimaryKey id, Func<TEntityDto, Task> updateAction);
 
         #endregion
 
@@ -226,14 +227,14 @@ namespace CoreSolution.Repository
         /// <summary>
         /// 删除一个Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        void Delete(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        void Delete(TEntityDto entityDto);
 
         /// <summary>
         /// 删除一个Entity
         /// </summary>
-        /// <param name="entity">Entity</param>
-        Task DeleteAsync(TEntity entity);
+        /// <param name="entityDto">EntityDto</param>
+        Task DeleteAsync(TEntityDto entityDto);
 
         /// <summary>
         /// 根据Id删除一个Entity

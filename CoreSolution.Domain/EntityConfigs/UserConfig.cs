@@ -16,10 +16,12 @@ namespace CoreSolution.Domain.EntityConfigs
             builder.Property(i => i.UserName).HasMaxLength(50).IsRequired();
             builder.Property(i => i.RealName).HasMaxLength(50);
             builder.Property(i => i.Email).HasMaxLength(50);
+            builder.Property(i => i.IsEmailConfirmed);
             builder.Property(i => i.PhoneNum).HasMaxLength(20);
+            builder.Property(i => i.IsPhoneNumConfirmed);
             builder.Property(i => i.Password).HasMaxLength(100).IsRequired();
             builder.Property(i => i.IsDeleted).IsRequired();
-            builder.Property(i => i.IsDisable).IsRequired();
+            builder.Property(i => i.IsLocked).IsRequired();
             builder.Property(i => i.CreationTime);
             builder.Property(i => i.LastModificationTime);
             builder.Property(i => i.DeletionTime);

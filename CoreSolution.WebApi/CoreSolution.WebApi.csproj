@@ -19,6 +19,7 @@
     <PackageReference Include="autofac.extensions.dependencyinjection" Version="4.2.2" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
     <PackageReference Include="swashbuckle.aspnetcore" Version="2.4.0" />
   </ItemGroup>
 

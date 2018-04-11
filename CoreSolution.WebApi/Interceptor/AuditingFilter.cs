@@ -14,16 +14,20 @@ namespace CoreSolution.WebApi.Interceptor
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             //通过Filter记录访问日志：ip为***、用户id为***（如果有）的用户在****执行了***操作，参数是***
-            string ip = context.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault() ??
-                        context.HttpContext.Connection.RemoteIpAddress.ToString();
+            string ip = context.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? context.HttpContext.Connection.RemoteIpAddress.ToString();
             long? userId = null;
             string para = string.Empty;
+            string token =context.HttpContext.Request.Headers["token"];
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                userId = (await LoginManager.GetUserIdAsync(token)).Value;
+            }
             foreach (var item in context.ActionArguments)
             {
-                if (item.Key == "token")
+                /*if (item.Key == "token")
                 {
                     userId = (await LoginManager.GetUserIdAsync(item.Value.ToString())).Value;
-                }
+                }*/
                 para += item.Key + ":" + item.Value + "/";
             }
             string controllerName = context.ActionDescriptor.RouteValues["controller"];

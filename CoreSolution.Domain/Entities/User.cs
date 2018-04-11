@@ -10,7 +10,9 @@ namespace CoreSolution.Domain.Entities
         public string UserName { get; set; }
         public string RealName { get; set; }
         public string Email { get; set; }
+        public bool IsEmailConfirmed { get; set; }
         public string PhoneNum { get; set; }
+        public bool IsPhoneNumConfirmed { get; set; }
         public string Password { get; set; }
         public int? CreatorUserId { get; set; }
         /// <summary>
@@ -24,9 +26,9 @@ namespace CoreSolution.Domain.Entities
         public virtual User DeleterUser { get; set; }
 
         /// <summary>
-        /// 是否禁用
+        /// 是否锁定
         /// </summary>
-        public bool IsDisable { get; set; } = false;
+        public bool IsLocked { get; set; } = false;
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public DateTime? LastModificationTime { get; set; }
         public DateTime? DeletionTime { get; set; }
