@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="configuration.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore" Version="2.0.2" />
+    <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="2.0.2" />
+    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="2.0.2" />
+    <PackageReference Include="microsoft.extensions.configuration.json" Version="2.0.1" />
+    <PackageReference Include="microsoft.extensions.options.configurationextensions" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreSolution.Domain\CoreSolution.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
