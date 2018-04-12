@@ -20,6 +20,6 @@ namespace CoreSolution.Dto
         public DateTime CreationTime { get; set; }
         public DateTime? LastModificationTime { get; set; }
         public DateTime? DeletionTime { get; set; }
-        public IList<RoleDto> Roles { get; set; }
+        public IDictionary<int, string> Roles { get; set; }
     }
 }

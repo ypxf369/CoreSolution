@@ -12,6 +12,7 @@ namespace CoreSolution.AutoMapper.Configuration
         public static IMapper Mapper { get; private set; }
 
         public static MapperConfiguration MapperConfiguration { get; private set; }
+        
         public static void Init()
         {
             MapperConfiguration = new MapperConfiguration(cfg =>
@@ -28,7 +29,7 @@ namespace CoreSolution.AutoMapper.Configuration
                 foreach (var typeInfo in allType)
                 {
                     var type = typeInfo.AsType();
-                    if (type == typeof(IProfile))
+                    if (type != typeof(IProfile))
                     {
                         //注册映射
                         global::AutoMapper.Mapper.Initialize(y =>
@@ -40,6 +41,7 @@ namespace CoreSolution.AutoMapper.Configuration
             });
 
             Mapper = MapperConfiguration.CreateMapper();
+            MapperConfiguration.AssertConfigurationIsValid();
         }
     }
 

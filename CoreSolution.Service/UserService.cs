@@ -85,7 +85,6 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-
                 CoreDbContext.Users.Add(entityDto.MapTo<User>());
                 CoreDbContext.SaveChanges();
             }
@@ -105,7 +104,7 @@ namespace CoreSolution.Service
 
         public override UserDto Update(UserDto entityDto)
         {
-            if (entityDto != null&&entityDto.Id>0)
+            if (entityDto != null && entityDto.Id > 0)
             {
                 var entity = GetAll().SingleOrDefault(i => i.Id == entityDto.Id);
                 if (entity != null)

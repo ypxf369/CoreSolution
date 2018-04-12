@@ -16,6 +16,7 @@ namespace CoreSolution.AutoMapper.Extensions
         public static T MapTo<T>(this object obj)
         {
             if (obj == null) return default(T);
+            //Mapper.Initialize(i => i.CreateMap(obj.GetType(), typeof(T)));
             return AutoMapperConfiguration.Mapper.Map<T>(obj);
         }
         /// <summary>
@@ -23,6 +24,8 @@ namespace CoreSolution.AutoMapper.Extensions
         /// </summary>
         public static List<TDestination> MapToList<TDestination>(this IEnumerable source)
         {
+            if (source == null) return new List<TDestination>();
+            //Mapper.Initialize(i => i.CreateMap(source.GetType(), typeof(TDestination)));
             return AutoMapperConfiguration.Mapper.Map<List<TDestination>>(source);
         }
         /// <summary>
@@ -30,6 +33,8 @@ namespace CoreSolution.AutoMapper.Extensions
         /// </summary>
         public static List<TDestination> MapToList<TSource, TDestination>(this IEnumerable<TSource> source)
         {
+            if (source == null) return new List<TDestination>();
+            //Mapper.Initialize(i => i.CreateMap(source.GetType(), typeof(TDestination)));
             return AutoMapperConfiguration.Mapper.Map<List<TDestination>>(source);
         }
         /// <summary>
@@ -40,6 +45,7 @@ namespace CoreSolution.AutoMapper.Extensions
             where TDestination : class
         {
             if (source == null) return destination;
+            //Mapper.Initialize(i => i.CreateMap(source.GetType(), typeof(TDestination)));
             return AutoMapperConfiguration.Mapper.Map(source, destination);
         }
         /// <summary>
@@ -47,6 +53,8 @@ namespace CoreSolution.AutoMapper.Extensions
         /// </summary>
         public static IEnumerable<T> DataReaderMapTo<T>(this IDataReader reader)
         {
+            if (reader == null) return new List<T>();
+            //Mapper.Initialize(i => i.CreateMap(reader.GetType(), typeof(T)));
             Mapper.Reset();
             return AutoMapperConfiguration.Mapper.Map<IDataReader, IEnumerable<T>>(reader);
         }
