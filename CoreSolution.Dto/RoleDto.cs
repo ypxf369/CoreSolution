@@ -13,10 +13,10 @@ namespace CoreSolution.Dto
         public string CreatorUserName { get; set; }
         public int? DeleterUserId { get; set; }
         public string DeleterUserName { get; set; }
-        public DateTime CreationTime { get; set; } = DateTime.Now;
+        public DateTime CreationTime { get; set; }
         public DateTime? LastModificationTime { get; set; }
         public DateTime? DeletionTime { get; set; }
-        public IList<UserDto> Users { get; set; }
-        public IList<PermissionDto> Permissions { get; set; }
+        public IDictionary<int, string> Users { get; set; }
+        public IDictionary<int, string> Permissions { get; set; }
     }
 }

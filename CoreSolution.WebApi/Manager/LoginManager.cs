@@ -8,18 +8,35 @@ namespace CoreSolution.WebApi.Manager
 {
     public class LoginManager
     {
-        private static string TOKEN_PREFIX = "API.User.Token";
-        private static string USERID_PREFIX = "API.User.UserId";
+        private static string TOKEN_PREFIX = "Api.User.Token.";
+        private static string USERID_PREFIX = "Api.User.UserId.";
+        private static string USERPERMISSIONS_PREFIX = "Api.User.Permissions.";
 
-        public static async Task LoginAsync(string token, long userId)
+        public static async Task LoginAsync(string token, int userId)
         {
-            await RedisHelper.StringSetAsync(TOKEN_PREFIX + token, userId, TimeSpan.FromDays(3));
-            await RedisHelper.StringSetAsync(USERID_PREFIX + userId, token, TimeSpan.FromDays(3));//正向、反向关系都保存，这样保证一个token只能登陆一次
+            await RedisHelper.StringSetAsync(TOKEN_PREFIX + token, userId, TimeSpan.FromHours(3));
+            await RedisHelper.StringSetAsync(USERID_PREFIX + userId, token, TimeSpan.FromHours(3));//正向、反向关系都保存，这样保证一个token只能登陆一次
         }
 
-        public static async Task<long?> GetUserIdAsync(string token)
+        /// <summary>
+        /// 缓存当前用户所具有的权限
+        /// </summary>
+        /// <param name="permissions">权限数组</param>
+        /// <param name="userId">用户id</param>
+        /// <returns></returns>
+        public static async Task SaveCurrentUserPermissionsAsync(string[] permissions, int userId)
         {
-            long? userId = await RedisHelper.StringGetAsync<long?>(TOKEN_PREFIX + token);
+            await RedisHelper.StringSetAsync(USERPERMISSIONS_PREFIX + userId, permissions, TimeSpan.FromHours(3));
+        }
+
+        public static async Task<string[]> GetCurrentUserPermissionsAsync(int userId)
+        {
+            return await RedisHelper.StringGetAsync<string[]>(USERPERMISSIONS_PREFIX + userId);
+        }
+
+        public static async Task<int?> GetUserIdAsync(string token)
+        {
+            int? userId = await RedisHelper.StringGetAsync<int?>(TOKEN_PREFIX + token);
             if (userId == null)
             {
                 return null;

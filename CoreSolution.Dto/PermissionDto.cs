@@ -13,10 +13,9 @@ namespace CoreSolution.Dto
         public string CreatorUserName { get; set; }
         public int? DeleterUserId { get; set; }
         public string DeleterUserName { get; set; }
-        public DateTime CreationTime { get; set; } = DateTime.Now;
+        public DateTime CreationTime { get; set; }
         public DateTime? LastModificationTime { get; set; }
         public DateTime? DeletionTime { get; set; }
-        public bool IsDeleted { get; set; } = false;
         public int RoleId { get; set; }
         public string RoleName { get; set; }
     }

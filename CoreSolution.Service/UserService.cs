@@ -130,37 +130,42 @@ namespace CoreSolution.Service
             return entityDto;
         }
 
-        Task<LoginResults> IUserService.CheckEmailAndPasswordAsync(string email, string password)
+        public Task<bool> CheckUserNameDupAsync(string userName)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IUserService.CheckPhoneDupAsync(string phoneNum)
+        public Task<bool> CheckPhoneDupAsync(string phoneNum)
         {
             throw new NotImplementedException();
         }
 
-        Task<LoginResults> IUserService.CheckPhoneNumAndPasswordAsync(string phoneNum, string password)
+        public Task<bool> CheckEmailDupAsync(string email)
         {
             throw new NotImplementedException();
         }
 
-        Task<LoginResults> IUserService.CheckUserNameAndPasswordAsync(string userName, string password)
+        public Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password)
         {
             throw new NotImplementedException();
         }
 
-        Task<UserDto> IUserService.GetUserByEmailAsync(string email)
+        public Task<UserDto> GetUserByUserNameOrEmailOrPhone(string userNameOrEmailOrPhone)
         {
             throw new NotImplementedException();
         }
 
-        Task<UserDto> IUserService.GetUserByPhoneNumAsync(string phoneNum)
+        public Task<UserDto> GetUserByEmailAsync(string email)
         {
             throw new NotImplementedException();
         }
 
-        Task<UserDto> IUserService.GetUserByUserNameAsync(string userName)
+        public Task<UserDto> GetUserByPhoneNumAsync(string phoneNum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserDto> GetUserByUserNameAsync(string userName)
         {
             throw new NotImplementedException();
         }

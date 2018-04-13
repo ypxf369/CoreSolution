@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
+using CoreSolution.AutoMapper.Startup;
 using CoreSolution.IService.Convention;
 using CoreSolution.WebApi.Interceptor;
 using log4net;
@@ -45,6 +47,7 @@ namespace CoreSolution.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            //services.AddAutoMapper();
             services.AddMvc(options =>
             {
                 options.Filters.Add<SysExceptionFilter>();//添加异常过滤器
@@ -87,7 +90,7 @@ namespace CoreSolution.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            AutoMapperStartup.Register();//加载AutoMapper配置项
             app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

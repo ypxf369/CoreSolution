@@ -15,6 +15,7 @@ namespace CoreSolution.EntityFrameworkCore
             var cfg = new ConfigurationBuilder().Add(new JsonConfigurationSource { Path = "configuration.json", ReloadOnChange = true }).Build();
             var connStr = cfg.GetSection("connStr");
             builder.UseSqlServer(connStr.Value);
+            //builder.UseLazyLoadingProxies();//启用EFCore的延迟加载
         }
 
         public static void Configure(DbContextOptionsBuilder builder, DbConnection connection)

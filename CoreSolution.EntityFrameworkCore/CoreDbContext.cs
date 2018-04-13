@@ -10,10 +10,10 @@ namespace CoreSolution.EntityFrameworkCore
 {
     public partial class CoreDbContext : DbContext
     {
-        public CoreDbContext()
-        {
-            Database.EnsureCreated();
-        }
+        //public CoreDbContext()
+        //{
+        //    Database.EnsureCreated();
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

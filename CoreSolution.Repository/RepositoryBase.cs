@@ -88,9 +88,7 @@ namespace CoreSolution.Repository
 
         public virtual TEntityDto FirstOrDefault(TPrimaryKey id)
         {
-            //return GetAll().FirstOrDefault(CreateEqualityExpressionForId(id)).MapTo<TEntityDto>();
-            var a = GetAll().FirstOrDefault(CreateEqualityExpressionForId(id));
-            return a.MapTo<TEntityDto>();
+            return GetAll().FirstOrDefault(CreateEqualityExpressionForId(id)).MapTo<TEntityDto>();
         }
 
         public virtual async Task<TEntityDto> FirstOrDefaultAsync(TPrimaryKey id)

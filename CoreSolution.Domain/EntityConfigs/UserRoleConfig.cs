@@ -11,7 +11,7 @@ namespace CoreSolution.Domain.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.ToTable("T_UserRoles");
+            builder.ToTable("T_UserRoles").HasQueryFilter(i => !i.IsDeleted);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.IsDeleted).IsRequired();
             builder.Property(i => i.CreationTime);

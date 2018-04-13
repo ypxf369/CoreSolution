@@ -20,7 +20,16 @@ namespace CoreSolution.EntityFrameworkCore
             //写的就比较麻烦
             var types = assembly.GetTypes().Where(t => !t.IsAbstract && t.GetInterfaces().Any(IsIEntityTypeConfigurationType));
             Type typeModelBuilder = modelBuilder.GetType();
-            MethodInfo methodNonGenericApplyConfiguration = typeModelBuilder.GetMethod(nameof(ModelBuilder.ApplyConfiguration));
+            //MethodInfo methodNonGenericApplyConfiguration = typeModelBuilder.GetMethod(nameof(ModelBuilder.ApplyConfiguration));
+            var methodNonGenericApplyConfiguration = typeModelBuilder
+                .GetMethods()
+                .SingleOrDefault(i => i.Name == nameof(ModelBuilder.ApplyConfiguration) && i.GetParameters()
+                .Any(a => a.ParameterType.Name == typeof(IEntityTypeConfiguration<>).Name));
+
+            //var methodNonGenericApplyConfiguration = typeModelBuilder
+            //    .GetMethods()
+            //    .Where(i => i.Name == nameof(ModelBuilder.ApplyConfiguration));
+            //methodNonGenericApplyConfiguration=methodNonGenericApplyConfiguration.Where(a => a.GetParameters().ParameterType == typeof(IEntityTypeConfiguration<>))
             foreach (var type in types)
             {
                 var entityTypeConfig = Activator.CreateInstance(type);

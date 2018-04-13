@@ -11,7 +11,7 @@ namespace CoreSolution.Domain.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.ToTable("T_Roles");
+            builder.ToTable("T_Roles").HasQueryFilter(i => !i.IsDeleted);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.Name).HasMaxLength(50).IsRequired();
             builder.Property(i => i.Description).HasMaxLength(100);

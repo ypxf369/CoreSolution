@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
+using CoreSolution.AutoMapper.MapProfile;
 
 namespace CoreSolution.AutoMapper.Configuration
 {

@@ -9,8 +9,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CoreSolution.WebApi.Interceptor
 {
-    public class CheckAuthorizeFilterAttribute : ActionFilterAttribute
+    public class CheckAuthorizeAttribute : ActionFilterAttribute
     {
+        private readonly string _name;
+        public CheckAuthorizeAttribute(string name)
+        {
+            _name = name;
+        }
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             string token = context.HttpContext.Request.Headers["token"];
@@ -18,6 +23,14 @@ namespace CoreSolution.WebApi.Interceptor
             {
                 context.Result = AjaxHelper.JsonResult(HttpStatusCode.Unauthorized, "未登录");
             }
+            //检查当前登录用户是否拥有该权限
+            int userId = (await LoginManager.GetUserIdAsync(token)).Value;
+            var permissions = await LoginManager.GetCurrentUserPermissionsAsync(userId);
+            if (!permissions.Contains(_name))
+            {
+                context.Result = AjaxHelper.JsonResult(HttpStatusCode.Unauthorized, "未授权");
+            }
+
             /*string token = context.HttpContext.Request.Query["token"];
             long? userId = await LoginManager.GetUserIdAsync(token);
             if (userId == null)

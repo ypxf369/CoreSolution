@@ -11,7 +11,7 @@ namespace CoreSolution.Domain.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("T_Users");
+            builder.ToTable("T_Users").HasQueryFilter(i => !i.IsDeleted);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.UserName).HasMaxLength(50).IsRequired();
             builder.Property(i => i.RealName).HasMaxLength(50);

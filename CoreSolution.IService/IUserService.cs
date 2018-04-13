@@ -12,12 +12,13 @@ namespace CoreSolution.IService
 {
     public interface IUserService : IRepository<User,UserDto>, IServiceSupport
     {
-        Task<LoginResults> CheckEmailAndPasswordAsync(string email, string password);
-        Task<LoginResults> CheckPhoneNumAndPasswordAsync(string phoneNum, string password);
-        Task<LoginResults> CheckUserNameAndPasswordAsync(string userName, string password);
+        Task<bool> CheckUserNameDupAsync(string userName);
+        Task<bool> CheckPhoneDupAsync(string phoneNum);
+        Task<bool> CheckEmailDupAsync(string email);
+        Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password);
+        Task<UserDto> GetUserByUserNameOrEmailOrPhone(string userNameOrEmailOrPhone);
         Task<UserDto> GetUserByEmailAsync(string email);
         Task<UserDto> GetUserByPhoneNumAsync(string phoneNum);
         Task<UserDto> GetUserByUserNameAsync(string userName);
-        Task<bool> CheckPhoneDupAsync(string phoneNum);
     }
 }

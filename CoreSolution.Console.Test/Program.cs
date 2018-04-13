@@ -101,6 +101,7 @@ namespace CoreSolution.Console.Test
 
                 using (var dbContext = new CoreDbContext())
                 {
+                    var a = dbContext.Users.ToList();
                     //var d = dbContext.Users.ProjectTo<UserDto>().First();
                     var d = dbContext.Users.Include(i=>i.CreatorUser).Include(i=>i.DeleterUser).Include(i=>i.UserRoles).ToList();
                 }

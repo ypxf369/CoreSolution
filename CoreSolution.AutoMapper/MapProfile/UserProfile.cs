@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoMapper;
-using CoreSolution.AutoMapper.Extensions;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Dto;
 
-namespace CoreSolution.AutoMapper
+namespace CoreSolution.AutoMapper.MapProfile
 {
-    public class CoreProfile : Profile, IProfile
+    public class UserProfile : Profile, IProfile
     {
-        public CoreProfile()
+        public UserProfile()
         {
             CreateMap<User, UserDto>()
                 .ForMember(i => i.CreatorUserName,

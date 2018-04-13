@@ -11,7 +11,7 @@ namespace CoreSolution.Domain.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.ToTable("T_Permissions");
+            builder.ToTable("T_Permissions").HasQueryFilter(i => !i.IsDeleted);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.Name).HasMaxLength(50).IsRequired();
             builder.Property(i => i.Description).HasMaxLength(50);
