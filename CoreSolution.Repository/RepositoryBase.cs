@@ -80,10 +80,20 @@ namespace CoreSolution.Repository
             return GetAll().Single(predicate).MapTo<TEntityDto>();
         }
 
+        public virtual TEntityDto SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            return GetAll().SingleOrDefault(predicate).MapTo<TEntityDto>();
+        }
+
         public virtual async Task<TEntityDto> SingleAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return (await GetAll().SingleAsync(predicate)).MapTo<TEntityDto>();
             //return Task.FromResult(Single(predicate));
+        }
+
+        public virtual async Task<TEntityDto> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return (await GetAll().SingleOrDefaultAsync(predicate)).MapTo<TEntityDto>();
         }
 
         public virtual TEntityDto FirstOrDefault(TPrimaryKey id)

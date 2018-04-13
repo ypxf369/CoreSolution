@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
 using CoreSolution.IService;
+using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
 using CoreSolution.WebApi.Manager;
 using CoreSolution.WebApi.Models.User;
@@ -44,6 +45,14 @@ namespace CoreSolution.WebApi.Controllers
             return await DoLoginAsync(inputLoginModel.UserNameOrEmailOrPhone, inputLoginModel.Password);
         }
 
+        [Route("getUsers")]
+        [HttpGet]
+        public async Task<JsonResult> GetUsers()
+        {
+            var users = await _userService.GetAllListAsync();
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", users);
+        }
+
         private async Task<JsonResult> DoLoginAsync(string userNameOrEmailOrPhone, string password)
         {
             if (string.IsNullOrWhiteSpace(userNameOrEmailOrPhone))
@@ -59,7 +68,7 @@ namespace CoreSolution.WebApi.Controllers
             LoginResults result = await _userService.CheckUserPasswordAsync(userNameOrEmailOrPhone, password);
             if (result == LoginResults.Success)
             {
-                var user = await _userService.GetUserByUserNameOrEmailOrPhone(userNameOrEmailOrPhone);
+                var user = await _userService.GetUserByUserNameOrEmailOrPhoneAsync(userNameOrEmailOrPhone);
                 string token = Guid.NewGuid().ToString();
                 await LoginManager.LoginAsync(token, user.Id);
                 //获取当前用户的权限

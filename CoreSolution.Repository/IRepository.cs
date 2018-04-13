@@ -93,11 +93,15 @@ namespace CoreSolution.Repository
         /// <param name="predicate">lambda</param>
         TEntityDto Single(Expression<Func<TEntity, bool>> predicate);
 
+        TEntityDto SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+
         /// <summary>
         /// 根据条件获得Single EntityDto
         /// </summary>
         /// <param name="predicate">lambda</param>
         Task<TEntityDto> SingleAsync(Expression<Func<TEntity, bool>> predicate);
+
+        Task<TEntityDto> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 根据主键获得FirstOrDefault EntityDto

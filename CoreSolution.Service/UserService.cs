@@ -10,6 +10,7 @@ using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
 using CoreSolution.IService;
 using CoreSolution.Repository;
+using CoreSolution.Tools.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.Service
@@ -145,14 +146,39 @@ namespace CoreSolution.Service
             throw new NotImplementedException();
         }
 
-        public Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password)
+        public async Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password)
         {
-            throw new NotImplementedException();
+            var userDto = await GetUserByUserNameOrEmailOrPhoneAsync(userNameOrEmailOrPhone);
+            if (userDto != null)
+            {
+                if (userDto.Password == password.ToMd5())
+                {
+                    return LoginResults.Success;
+                }
+                else
+                {
+                    return LoginResults.PassWordError;
+                }
+            }
+            else
+            {
+                return LoginResults.NotExist;
+            }
         }
 
-        public Task<UserDto> GetUserByUserNameOrEmailOrPhone(string userNameOrEmailOrPhone)
+        public async Task<UserDto> GetUserByUserNameOrEmailOrPhoneAsync(string userNameOrEmailOrPhone)
         {
-            throw new NotImplementedException();
+            UserDto userDto;
+            if (userNameOrEmailOrPhone.IsNumeric())
+            {
+                userDto = await SingleOrDefaultAsync(i => i.PhoneNum == userNameOrEmailOrPhone);
+            }
+            else
+            {
+                userDto = await SingleOrDefaultAsync(i =>
+                    i.UserName == userNameOrEmailOrPhone || i.IsEmailConfirmed && i.Email == userNameOrEmailOrPhone);
+            }
+            return userDto;
         }
 
         public Task<UserDto> GetUserByEmailAsync(string email)

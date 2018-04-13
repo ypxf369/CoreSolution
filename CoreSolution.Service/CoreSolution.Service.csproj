@@ -14,6 +14,7 @@
     <ProjectReference Include="..\CoreSolution.EntityFrameworkCore\CoreSolution.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\CoreSolution.IService\CoreSolution.IService.csproj" />
     <ProjectReference Include="..\CoreSolution.Repository\CoreSolution.Repository.csproj" />
+    <ProjectReference Include="..\CoreSolution.Tools\CoreSolution.Tools.csproj" />
   </ItemGroup>
 
 </Project>

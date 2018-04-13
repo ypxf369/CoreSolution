@@ -159,5 +159,19 @@ namespace CoreSolution.Tools.Extensions
                 return sb.ToString();
             }
         }
+
+        /// <summary>
+        /// 判断字符串是否为数字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsNumeric(this string str)
+        {
+            if (str.IsNullOrWhiteSpace())
+            {
+                return false;
+            }
+            return Regex.IsMatch(str.Trim(), @"^[+-]?/d*[.]?/d*$");
+        }
     }
 }

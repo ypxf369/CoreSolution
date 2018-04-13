@@ -3,7 +3,7 @@
     /// <summary>
     /// 标识接口,所有AutoMapper配置都要实现这个接口
     /// </summary>
-    internal interface IProfile
+    public interface IProfile
     {
     }
 }

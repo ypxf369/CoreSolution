@@ -20,10 +20,10 @@ namespace CoreSolution.AutoMapper.MapProfile
                 .ForMember(i => i.RoleName, i => i.MapFrom(m => m.Role != null ? m.Role.Name : null));
 
             CreateMap<PermissionDto, Permission>()
-                .ForMember(i => i.CreatorUser, i => i.Ignore())
-                .ForMember(i => i.DeleterUser, i => i.Ignore())
-                .ForMember(i => i.IsDeleted, i => i.Ignore())
-                .ForMember(i => i.CreationTime, i => i.Ignore());
+            .ForMember(i => i.CreatorUser, i => i.Ignore())
+            .ForMember(i => i.DeleterUser, i => i.Ignore())
+            .ForMember(i => i.IsDeleted, i => i.Ignore())
+            .ForMember(i => i.CreationTime, i => i.Ignore());
         }
     }
 }

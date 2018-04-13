@@ -13,7 +13,7 @@ namespace CoreSolution.AutoMapper.Configuration
         public static IMapper Mapper { get; private set; }
 
         public static MapperConfiguration MapperConfiguration { get; private set; }
-        
+
         public static void Init()
         {
             MapperConfiguration = new MapperConfiguration(cfg =>
@@ -26,19 +26,10 @@ namespace CoreSolution.AutoMapper.Configuration
                         .Select(Assembly.Load)
                         .SelectMany(y => y.DefinedTypes)
                         .Where(type => typeof(IProfile).GetTypeInfo().IsAssignableFrom(type.AsType()));
+                var types = allType.Select(i => i.AsType()).ToArray();
 
-                foreach (var typeInfo in allType)
-                {
-                    var type = typeInfo.AsType();
-                    if (type != typeof(IProfile))
-                    {
-                        //注册映射
-                        global::AutoMapper.Mapper.Initialize(y =>
-                        {
-                            y.AddProfiles(type); // Initialise each Profile classe
-                        });
-                    }
-                }
+                //注册映射
+                global::AutoMapper.Mapper.Initialize(i => i.AddProfiles(types));
             });
 
             Mapper = MapperConfiguration.CreateMapper();
