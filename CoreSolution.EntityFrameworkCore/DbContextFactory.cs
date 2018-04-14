@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CoreSolution.EntityFrameworkCore;
 
-namespace CoreSolution.Repository
+namespace CoreSolution.EntityFrameworkCore
 {
     public class DbContextFactory
     {

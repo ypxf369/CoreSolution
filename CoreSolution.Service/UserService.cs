@@ -8,14 +8,15 @@ using CoreSolution.AutoMapper.Extensions;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
+using CoreSolution.EntityFrameworkCore;
+using CoreSolution.EntityFrameworkCore.Repositories;
 using CoreSolution.IService;
-using CoreSolution.Repository;
 using CoreSolution.Tools.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.Service
 {
-    public sealed class UserService : RepositoryBase<User, UserDto, int>, IUserService
+    public sealed class UserService : EfCoreRepositoryBase<User, UserDto, int>, IUserService
     {
         public UserService()
         {
@@ -80,6 +81,14 @@ namespace CoreSolution.Service
         public override IQueryable<User> GetAll()
         {
             return CoreDbContext.Users;
+        }
+
+        public override IQueryable<User> GetAllIncluding()
+        {
+            return GetAll()
+                .Include(i => i.CreatorUser)
+                .Include(i => i.DeleterUser)
+                .Include(i => i.UserRoles);
         }
 
         public override UserDto Insert(UserDto entityDto)

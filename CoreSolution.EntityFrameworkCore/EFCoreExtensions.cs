@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.EntityFrameworkCore
 {
-    public static class EFCoreExtensions
+    public static class EfCoreExtensions
     {
         private static bool IsIEntityTypeConfigurationType(Type typeIntf)
         {

@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Dto;
+using CoreSolution.EntityFrameworkCore;
+using CoreSolution.EntityFrameworkCore.Repositories;
 using CoreSolution.IService;
-using CoreSolution.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.Service
 {
-    public sealed class PermissionService : RepositoryBase<Permission, PermissionDto, int>, IPermissionService
+    public sealed class PermissionService : EfCoreRepositoryBase<Permission, PermissionDto, int>, IPermissionService
     {
         public PermissionService()
         {
             CoreDbContext = DbContextFactory.DbContext;
         }
+
         public override void Delete(PermissionDto entityDto)
         {
             throw new NotImplementedException();
@@ -47,7 +49,12 @@ namespace CoreSolution.Service
 
         public override IQueryable<Permission> GetAll()
         {
-            return CoreDbContext.Permissions;
+            throw new NotImplementedException();
+        }
+
+        public override IQueryable<Permission> GetAllIncluding()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IList<PermissionDto>> GetPermissionsByUserIdAsync(int userId)

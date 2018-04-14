@@ -11,7 +11,6 @@ namespace CoreSolution.Domain.Entities
         public DateTime? LastModificationTime { get; set; }
         public DateTime? DeletionTime { get; set; }
         public bool IsDeleted { get; set; } = false;
-
         public int UserId { get; set; }
         public virtual User User { get; set; }
         public int RoleId { get; set; }

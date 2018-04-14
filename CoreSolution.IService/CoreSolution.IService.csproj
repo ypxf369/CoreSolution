@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreSolution.Dto\CoreSolution.Dto.csproj" />
-    <ProjectReference Include="..\CoreSolution.Repository\CoreSolution.Repository.csproj" />
+    <ProjectReference Include="..\CoreSolution.EntityFrameworkCore\CoreSolution.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 </Project>

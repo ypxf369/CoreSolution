@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CoreSolution.AutoMapper.Extensions;
 using CoreSolution.Domain.Entities.Base;
 using CoreSolution.Dto.Base;
-using CoreSolution.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.Repository
@@ -17,14 +17,7 @@ namespace CoreSolution.Repository
         where TEntity : class, IEntity<TPrimaryKey>
         where TEntityDto : class, IEntityDto<TPrimaryKey>
     {
-        public virtual CoreDbContext CoreDbContext { get; set; }
         public abstract IQueryable<TEntity> GetAll();
-
-        public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
-        {
-            //return GetAll().Include(i => propertySelectors);
-            return GetAll();
-        }
 
         public virtual List<TEntityDto> GetAllList()
         {
@@ -34,7 +27,6 @@ namespace CoreSolution.Repository
         public virtual Task<List<TEntityDto>> GetAllListAsync()
         {
             return GetAll().ProjectTo<TEntityDto>().ToListAsync();
-            //return Task.FromResult(GetAllList());
         }
 
         public virtual List<TEntityDto> GetAllList(Expression<Func<TEntity, bool>> predicate)
@@ -45,7 +37,6 @@ namespace CoreSolution.Repository
         public virtual Task<List<TEntityDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Where(predicate).ProjectTo<TEntityDto>().ToListAsync();
-            //return Task.FromResult(GetAllList(predicate));
         }
 
         public virtual T Query<T>(Func<IQueryable<TEntity>, T> queryMethod)
@@ -77,45 +68,42 @@ namespace CoreSolution.Repository
 
         public virtual TEntityDto Single(Expression<Func<TEntity, bool>> predicate)
         {
-            return GetAll().Single(predicate).MapTo<TEntityDto>();
+            return GetAll().Where(predicate).ProjectTo<TEntityDto>().Single();
         }
 
         public virtual TEntityDto SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return GetAll().SingleOrDefault(predicate).MapTo<TEntityDto>();
+            return GetAll().Where(predicate).ProjectTo<TEntityDto>().SingleOrDefault();
         }
 
         public virtual async Task<TEntityDto> SingleAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return (await GetAll().SingleAsync(predicate)).MapTo<TEntityDto>();
-            //return Task.FromResult(Single(predicate));
+            return await GetAll().Where(predicate).ProjectTo<TEntityDto>().SingleAsync();
         }
 
         public virtual async Task<TEntityDto> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return (await GetAll().SingleOrDefaultAsync(predicate)).MapTo<TEntityDto>();
+            return await GetAll().Where(predicate).ProjectTo<TEntityDto>().SingleOrDefaultAsync();
         }
 
         public virtual TEntityDto FirstOrDefault(TPrimaryKey id)
         {
-            return GetAll().FirstOrDefault(CreateEqualityExpressionForId(id)).MapTo<TEntityDto>();
+            return GetAll().Where(CreateEqualityExpressionForId(id)).ProjectTo<TEntityDto>().FirstOrDefault();
         }
 
         public virtual async Task<TEntityDto> FirstOrDefaultAsync(TPrimaryKey id)
         {
-            return (await GetAll().FirstOrDefaultAsync(CreateEqualityExpressionForId(id))).MapTo<TEntityDto>();
-            //return Task.FromResult(FirstOrDefault(id));
+            return await GetAll().Where(CreateEqualityExpressionForId(id)).ProjectTo<TEntityDto>().FirstOrDefaultAsync();
         }
 
         public virtual TEntityDto FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return GetAll().FirstOrDefault(predicate).MapTo<TEntityDto>();
+            return GetAll().Where(predicate).ProjectTo<TEntityDto>().FirstOrDefault();
         }
 
         public virtual async Task<TEntityDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return (await GetAll().FirstOrDefaultAsync(predicate)).MapTo<TEntityDto>();
-            //return Task.FromResult(FirstOrDefault(predicate));
+            return await GetAll().Where(predicate).ProjectTo<TEntityDto>().FirstOrDefaultAsync();
         }
 
         public virtual TEntityDto Load(TPrimaryKey id)
@@ -126,11 +114,6 @@ namespace CoreSolution.Repository
         public abstract TEntityDto Insert(TEntityDto entityDto);
 
         public abstract Task<TEntityDto> InsertAsync(TEntityDto entityDto);
-
-        //public virtual Task<TEntityDto> InsertAsync(TEntityDto entityDto)
-        //{
-        //    return Task.FromResult(Insert(entityDto));
-        //}
 
         public virtual TPrimaryKey InsertAndGetId(TEntityDto entityDto)
         {
@@ -144,12 +127,14 @@ namespace CoreSolution.Repository
 
         public virtual TEntityDto InsertOrUpdate(TEntityDto entityDto)
         {
-            return FirstOrDefault(entityDto.Id) == null ? Insert(entityDto).MapTo<TEntityDto>() : Update(entityDto).MapTo<TEntityDto>();
+            var entity = FirstOrDefault(entityDto.Id) == null ? Insert(entityDto) : Update(entityDto);
+            return Mapper.Map<TEntityDto>(entity);
         }
 
         public virtual async Task<TEntityDto> InsertOrUpdateAsync(TEntityDto entityDto)
         {
-            return await FirstOrDefaultAsync(entityDto.Id) == null ? (await InsertAsync(entityDto)).MapTo<TEntityDto>() : (await UpdateAsync(entityDto)).MapTo<TEntityDto>();
+            var entity = await FirstOrDefaultAsync(entityDto.Id) == null ? await InsertAsync(entityDto) : await UpdateAsync(entityDto);
+            return Mapper.Map<TEntityDto>(entity);
         }
 
         public virtual TPrimaryKey InsertOrUpdateAndGetId(TEntityDto entityDto)
@@ -160,16 +145,11 @@ namespace CoreSolution.Repository
         public virtual async Task<TPrimaryKey> InsertOrUpdateAndGetIdAsync(TEntityDto entityDto)
         {
             return (await InsertOrUpdateAsync(entityDto)).Id;
-            //return Task.FromResult(InsertOrUpdateAndGetId(entityDto));
         }
 
         public abstract TEntityDto Update(TEntityDto entityDto);
 
         public abstract Task<TEntityDto> UpdateAsync(TEntityDto entityDto);
-        //public virtual Task<TEntityDto> UpdateAsync(TEntityDto entityDto)
-        //{
-        //    return Task.FromResult(Update(entityDto));
-        //}
 
         public virtual TEntityDto Update(TPrimaryKey id, Action<TEntityDto> updateAction)
         {
@@ -189,37 +169,19 @@ namespace CoreSolution.Repository
 
         public abstract Task DeleteAsync(TEntityDto entityDto);
 
-        //public virtual Task DeleteAsync(TEntityDto entityDto)
-        //{
-        //    Delete(entityDto);
-        //    return Task.FromResult(0);
-        //}
-
         public abstract void Delete(TPrimaryKey id);
 
         public abstract Task DeleteAsync(TPrimaryKey id);
-
-        //public virtual Task DeleteAsync(TPrimaryKey id)
-        //{
-        //    Delete(id);
-        //    return Task.FromResult(0);
-        //}
 
         public virtual void Delete(Expression<Func<TEntity, bool>> predicate)
         {
             foreach (var entity in GetAll().Where(predicate).ToList())
             {
-                Delete(entity.MapTo<TEntityDto>());
+                Delete(Mapper.Map<TEntityDto>(entity));
             }
         }
 
         public abstract Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
-
-        //public virtual Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    Delete(predicate);
-        //    return Task.FromResult(0);
-        //}
 
         public virtual int Count()
         {
@@ -229,7 +191,6 @@ namespace CoreSolution.Repository
         public virtual Task<int> CountAsync()
         {
             return GetAll().CountAsync();
-            //return Task.FromResult(Count());
         }
 
         public virtual int Count(Expression<Func<TEntity, bool>> predicate)
@@ -240,7 +201,6 @@ namespace CoreSolution.Repository
         public virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().CountAsync(predicate);
-            //return Task.FromResult(Count(predicate));
         }
 
         public virtual long LongCount()
@@ -251,7 +211,6 @@ namespace CoreSolution.Repository
         public virtual Task<long> LongCountAsync()
         {
             return GetAll().LongCountAsync();
-            //return Task.FromResult(LongCount());
         }
 
         public virtual long LongCount(Expression<Func<TEntity, bool>> predicate)
@@ -262,7 +221,6 @@ namespace CoreSolution.Repository
         public virtual Task<long> LongCountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().LongCountAsync(predicate);
-            //return Task.FromResult(LongCount(predicate));
         }
 
         protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)

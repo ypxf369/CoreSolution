@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -47,10 +48,14 @@ namespace CoreSolution.WebApi.Controllers
 
         [Route("getUsers")]
         [HttpGet]
-        public async Task<JsonResult> GetUsers()
+        public async Task<JsonResult> GetUsers(int userId)
         {
-            var users = await _userService.GetAllListAsync();
-            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", users);
+            var sw=new Stopwatch();
+            sw.Start();
+            var users = _userService.Get(userId);
+            sw.Stop();
+            //var users =await _userService.GetAllListAsync();
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new{users,sw.ElapsedMilliseconds});
         }
 
         private async Task<JsonResult> DoLoginAsync(string userNameOrEmailOrPhone, string password)

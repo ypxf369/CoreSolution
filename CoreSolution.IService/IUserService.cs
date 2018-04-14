@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
+using CoreSolution.EntityFrameworkCore.Repositories;
 using CoreSolution.IService.Convention;
-using CoreSolution.Repository;
 
 namespace CoreSolution.IService
 {
-    public interface IUserService : IRepository<User,UserDto>, IServiceSupport
+    public interface IUserService : IEfCoreRepository<User,UserDto>, IServiceSupport
     {
         Task<bool> CheckUserNameDupAsync(string userName);
         Task<bool> CheckPhoneDupAsync(string phoneNum);

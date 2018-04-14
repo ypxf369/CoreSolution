@@ -31,14 +31,7 @@ namespace CoreSolution.Repository
         /// </summary>
         /// <returns></returns>
         IQueryable<TEntity> GetAll();
-
-        /// <summary>
-        /// IQueryable-GetAll
-        /// </summary>
-        /// <param name="propertySelectors">表达式列表</param>
-        /// <returns></returns>
-        IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors);
-
+        
         /// <summary>
         /// List-GetAll
         /// </summary>
