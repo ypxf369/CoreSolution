@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using CoreSolution.AutoMapper.Extensions;
+using AutoMapper;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
@@ -26,7 +26,7 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-                var entry = CoreDbContext.Entry(entityDto.MapTo<User>());
+                var entry = CoreDbContext.Entry(Mapper.Map<User>(entityDto));
                 entry.State = EntityState.Deleted;
                 CoreDbContext.SaveChanges();
             }
@@ -36,7 +36,7 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-                var entry = CoreDbContext.Entry(entityDto.MapTo<User>());
+                var entry = CoreDbContext.Entry(Mapper.Map<User>(entityDto));
                 entry.State = EntityState.Deleted;
                 await CoreDbContext.SaveChangesAsync();
             }
@@ -95,7 +95,7 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-                CoreDbContext.Users.Add(entityDto.MapTo<User>());
+                CoreDbContext.Users.Add(Mapper.Map<User>(entityDto));
                 CoreDbContext.SaveChanges();
             }
             return entityDto;
@@ -106,7 +106,7 @@ namespace CoreSolution.Service
             if (entityDto != null)
             {
 
-                CoreDbContext.Users.Add(entityDto.MapTo<User>());
+                CoreDbContext.Users.Add(Mapper.Map<User>(entityDto));
                 await CoreDbContext.SaveChangesAsync();
             }
             return entityDto;
@@ -119,7 +119,7 @@ namespace CoreSolution.Service
                 var entity = GetAll().SingleOrDefault(i => i.Id == entityDto.Id);
                 if (entity != null)
                 {
-                    entity = entityDto.MapTo<User>();
+                    entity = Mapper.Map<User>(entityDto);
                     CoreDbContext.SaveChanges();
                 }
             }
@@ -133,7 +133,7 @@ namespace CoreSolution.Service
                 var entity = await GetAll().SingleOrDefaultAsync(i => i.Id == entityDto.Id);
                 if (entity != null)
                 {
-                    entity = entityDto.MapTo<User>();
+                    entity = Mapper.Map<User>(entityDto);
                 }
                 await CoreDbContext.SaveChangesAsync();
             }

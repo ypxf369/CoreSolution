@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CoreSolution.AutoMapper.Extensions;
 using CoreSolution.Domain.Entities.Base;
 using CoreSolution.Dto.Base;
 using Microsoft.EntityFrameworkCore;
