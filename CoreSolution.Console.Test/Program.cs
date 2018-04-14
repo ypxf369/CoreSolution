@@ -21,10 +21,16 @@ namespace CoreSolution.Console.Test
     {
         static void Main(string[] args)
         {
+            #region 生成数据库
             /*using (var dbContext = new CoreDbContext())
             {
                 dbContext.Users.ToList();
-            }*/
+            }
+            System.Console.WriteLine("数据库生成成功");
+            System.Console.ReadKey();*/
+            #endregion
+
+            #region AutoMapper测试
             AutoMapperStartup.Register();
             var builder = new ContainerBuilder();
             builder.RegisterType<UserService>().As<IUserService>();
@@ -33,7 +39,7 @@ namespace CoreSolution.Console.Test
                 var userService = container.Resolve<IUserService>();
                 var userDto = new UserDto
                 {
-                    Id=1,
+                    Id = 1,
                     UserName = "yepeng",
                     RealName = "ypxf369",
                     Email = "ypxf369@163.com",
@@ -43,11 +49,11 @@ namespace CoreSolution.Console.Test
                     DeleterUserId = 1,
                     //Roles = new List<RoleDto>() { new RoleDto(){Id = 1}}
                 };
-                
-                
+
+
                 var user1 = new User
                 {
-                    Id=1,
+                    Id = 1,
                     UserName = "aaa",
                     RealName = "aaaypxf369",
                     Email = "ypxf369@163.com",
@@ -89,29 +95,32 @@ namespace CoreSolution.Console.Test
                 var userRoleEntity = new UserRole
                 {
                     Id = 1,
-                    UserId =user1.Id,
+                    UserId = user1.Id,
                     User = user1,
                     RoleId = roleEntity.Id,
                     Role = roleEntity
                 };
-                user1.UserRoles=new List<UserRole>(){userRoleEntity};
-                userEntity.UserRoles=new List<UserRole>(){userRoleEntity};
+                user1.UserRoles = new List<UserRole>() { userRoleEntity };
+                userEntity.UserRoles = new List<UserRole>() { userRoleEntity };
                 var user = Mapper.Map<User>(userDto);//userDto.MapTo<User>();
                 var uDto = Mapper.Map<UserDto>(userEntity);
 
                 using (var dbContext = new CoreDbContext())
                 {
-                    var a = dbContext.Users.ToList();
+                    //var a = dbContext.Users.Find(3);
+                    var a = userService.Get(3);
+                    var adto = Mapper.Map<UserDto>(a);
                     //var d = dbContext.Users.ProjectTo<UserDto>().First();
-                    var d = dbContext.Users.Include(i=>i.CreatorUser).Include(i=>i.DeleterUser).Include(i=>i.UserRoles).ToList();
+                    var d = dbContext.Users.Include(i => i.CreatorUser).Include(i => i.DeleterUser).Include(i => i.UserRoles).ToList();
                 }
 
                 //int id=userService.InsertAndGetId(userDto);
                 var u = userService.Get(2);
                 //var usere = Mapper.Map<User>(u);
                 u.UserName = "ypxf369_2";
-                int id=userService.InsertAndGetId(u);
-            }
+                int id = userService.InsertAndGetId(u);
+            } 
+            #endregion
 
 
             System.Console.WriteLine("Hello World!");
