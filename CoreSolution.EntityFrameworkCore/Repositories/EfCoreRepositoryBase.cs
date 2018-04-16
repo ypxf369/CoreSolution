@@ -18,10 +18,17 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
         where TEntity : class, IEntity<TPrimaryKey>
         where TEntityDto : class, IEntityDto<TPrimaryKey>
     {
-        public virtual CoreDbContext CoreDbContext { get; set; }
+
+        public readonly EfCoreDbContext _dbContext;
+
+        protected EfCoreRepositoryBase()
+        {
+            DbContext = new EfCoreDbContext();
+            _dbContext = (EfCoreDbContext)DbContext;
+        }
 
         /// <summary>
-        /// Includ与NoInclud的区别只在于首次加载速度上，之后效率基本持平，Includ比NoInclud首次加载速度快13%左右。
+        /// Includ与NoInclud的区别只在于首次加载速度上，之后效率基本持平，Includ比NoInclud首次加载速度快10%左右。
         /// </summary>
         /// <returns></returns>
         public abstract IQueryable<TEntity> GetAllIncluding();

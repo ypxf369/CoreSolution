@@ -105,7 +105,7 @@ namespace CoreSolution.Console.Test
                 var user = Mapper.Map<User>(userDto);//userDto.MapTo<User>();
                 var uDto = Mapper.Map<UserDto>(userEntity);
 
-                using (var dbContext = new CoreDbContext())
+                using (var dbContext = new EfCoreDbContext())
                 {
                     //var a = dbContext.Users.Find(3);
                     var a = userService.Get(3);

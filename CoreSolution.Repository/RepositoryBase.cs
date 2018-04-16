@@ -16,6 +16,8 @@ namespace CoreSolution.Repository
         where TEntity : class, IEntity<TPrimaryKey>
         where TEntityDto : class, IEntityDto<TPrimaryKey>
     {
+        public object DbContext { get; set; }
+
         public abstract IQueryable<TEntity> GetAll();
 
         public virtual List<TEntityDto> GetAllList()

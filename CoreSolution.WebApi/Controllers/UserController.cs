@@ -5,9 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CoreSolution.Domain.Enum;
-using CoreSolution.Dto;
 using CoreSolution.IService;
-using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
 using CoreSolution.WebApi.Manager;
 using CoreSolution.WebApi.Models.User;
@@ -44,18 +42,6 @@ namespace CoreSolution.WebApi.Controllers
         public async Task<JsonResult> Login([FromBody] InputLoginModel inputLoginModel)
         {
             return await DoLoginAsync(inputLoginModel.UserNameOrEmailOrPhone, inputLoginModel.Password);
-        }
-
-        [Route("getUsers")]
-        [HttpGet]
-        public async Task<JsonResult> GetUsers(int userId)
-        {
-            var sw=new Stopwatch();
-            sw.Start();
-            var users = _userService.Get(userId);
-            sw.Stop();
-            //var users =await _userService.GetAllListAsync();
-            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new{users,sw.ElapsedMilliseconds});
         }
 
         private async Task<JsonResult> DoLoginAsync(string userNameOrEmailOrPhone, string password)

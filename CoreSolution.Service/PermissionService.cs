@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Dto;
-using CoreSolution.EntityFrameworkCore;
 using CoreSolution.EntityFrameworkCore.Repositories;
 using CoreSolution.IService;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +16,6 @@ namespace CoreSolution.Service
 {
     public sealed class PermissionService : EfCoreRepositoryBase<Permission, PermissionDto, int>, IPermissionService
     {
-        public PermissionService()
-        {
-            CoreDbContext = DbContextFactory.DbContext;
-        }
-
         public override void Delete(PermissionDto entityDto)
         {
             throw new NotImplementedException();
@@ -59,7 +53,7 @@ namespace CoreSolution.Service
 
         public async Task<IList<PermissionDto>> GetPermissionsByUserIdAsync(int userId)
         {
-            var roleIds = await CoreDbContext.UserRoles
+            var roleIds = await _dbContext.UserRoles
                 .Where(i => i.UserId == userId)
                 .Select(i => i.RoleId)
                 .ToListAsync();

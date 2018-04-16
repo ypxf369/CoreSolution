@@ -8,7 +8,6 @@ using AutoMapper;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
-using CoreSolution.EntityFrameworkCore;
 using CoreSolution.EntityFrameworkCore.Repositories;
 using CoreSolution.IService;
 using CoreSolution.Tools.Extensions;
@@ -18,17 +17,13 @@ namespace CoreSolution.Service
 {
     public sealed class UserService : EfCoreRepositoryBase<User, UserDto, int>, IUserService
     {
-        public UserService()
-        {
-            CoreDbContext = DbContextFactory.DbContext;
-        }
         public override void Delete(UserDto entityDto)
         {
             if (entityDto != null)
             {
-                var entry = CoreDbContext.Entry(Mapper.Map<User>(entityDto));
+                var entry = _dbContext.Entry(Mapper.Map<User>(entityDto));
                 entry.State = EntityState.Deleted;
-                CoreDbContext.SaveChanges();
+                _dbContext.SaveChanges();
             }
         }
 
@@ -36,9 +31,9 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-                var entry = CoreDbContext.Entry(Mapper.Map<User>(entityDto));
+                var entry = _dbContext.Entry(Mapper.Map<User>(entityDto));
                 entry.State = EntityState.Deleted;
-                await CoreDbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -47,9 +42,9 @@ namespace CoreSolution.Service
             if (id > 0)
             {
                 var user = Single(i => i.Id == id);
-                var entry = CoreDbContext.Entry(user);
+                var entry = _dbContext.Entry(user);
                 entry.State = EntityState.Deleted;
-                CoreDbContext.SaveChanges();
+                _dbContext.SaveChanges();
             }
         }
 
@@ -58,9 +53,9 @@ namespace CoreSolution.Service
             if (id > 0)
             {
                 var user = await SingleAsync(i => i.Id == id);
-                var entry = CoreDbContext.Entry(user);
+                var entry = _dbContext.Entry(user);
                 entry.State = EntityState.Deleted;
-                await CoreDbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
         }
 
@@ -71,16 +66,16 @@ namespace CoreSolution.Service
             {
                 await users.ForEachAsync(i =>
                {
-                   var entry = CoreDbContext.Entry(i);
+                   var entry = _dbContext.Entry(i);
                    entry.State = EntityState.Deleted;
                });
-                await CoreDbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
         }
 
         public override IQueryable<User> GetAll()
         {
-            return CoreDbContext.Users;
+            return _dbContext.Users;
         }
 
         public override IQueryable<User> GetAllIncluding()
@@ -95,8 +90,8 @@ namespace CoreSolution.Service
         {
             if (entityDto != null)
             {
-                CoreDbContext.Users.Add(Mapper.Map<User>(entityDto));
-                CoreDbContext.SaveChanges();
+                _dbContext.Users.Add(Mapper.Map<User>(entityDto));
+                _dbContext.SaveChanges();
             }
             return entityDto;
         }
@@ -106,8 +101,8 @@ namespace CoreSolution.Service
             if (entityDto != null)
             {
 
-                CoreDbContext.Users.Add(Mapper.Map<User>(entityDto));
-                await CoreDbContext.SaveChangesAsync();
+                _dbContext.Users.Add(Mapper.Map<User>(entityDto));
+                await _dbContext.SaveChangesAsync();
             }
             return entityDto;
         }
@@ -120,7 +115,7 @@ namespace CoreSolution.Service
                 if (entity != null)
                 {
                     entity = Mapper.Map<User>(entityDto);
-                    CoreDbContext.SaveChanges();
+                    _dbContext.SaveChanges();
                 }
             }
             return entityDto;
@@ -135,7 +130,7 @@ namespace CoreSolution.Service
                 {
                     entity = Mapper.Map<User>(entityDto);
                 }
-                await CoreDbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             return entityDto;
         }

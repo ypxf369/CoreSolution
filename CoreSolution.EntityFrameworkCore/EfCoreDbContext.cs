@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.EntityFrameworkCore
 {
-    public partial class CoreDbContext : DbContext
+    public partial class EfCoreDbContext : DbContext
     {
         //public CoreDbContext()
         //{
