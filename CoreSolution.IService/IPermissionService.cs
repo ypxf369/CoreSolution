@@ -11,6 +11,7 @@ namespace CoreSolution.IService
 {
     public interface IPermissionService : IEfCoreRepository<Permission, PermissionDto>, IServiceSupport
     {
+        Task<bool> CheckPermissionNameDupAsync(string permissionName);
         Task<IList<PermissionDto>> GetPermissionsByUserIdAsync(int userId);
     }
 }

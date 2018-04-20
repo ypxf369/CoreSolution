@@ -11,7 +11,7 @@ namespace CoreSolution.Repository
     public interface IRepository
     {
     }
-    public interface IRepository<TEntity,TEntityDto> : IRepository<TEntity, TEntityDto, int> where TEntity : class, IEntity<int>
+    public interface IRepository<TEntity, TEntityDto> : IRepository<TEntity, TEntityDto, int> where TEntity : class, IEntity<int>
     {
 
     }
@@ -31,7 +31,7 @@ namespace CoreSolution.Repository
         /// </summary>
         /// <returns></returns>
         IQueryable<TEntity> GetAll();
-        
+
         /// <summary>
         /// List-GetAll
         /// </summary>
@@ -57,6 +57,68 @@ namespace CoreSolution.Repository
         /// <param name="predicate">条件</param>
         /// <returns>List EntityDto</returns>
         Task<List<TEntityDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// 分页方法
+        /// </summary>
+        /// <param name="predicate">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="totalCount">总数据条数</param>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据条数</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        List<TEntityDto> GetPaged<TProperty>(out int totalCount, Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TProperty>> orderBy, int pageIndex, int pageSize, bool isDesc = false);
+
+        /// <summary>
+        /// 分页方法
+        /// </summary>
+        /// <param name="predicate">过滤条件</param>
+        /// <param name="orderBy">排序条件</param>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据条数</param>
+        /// <param name="isDesc">是否降序</param>
+        /// <returns></returns>
+        Task<Tuple<int, List<TEntityDto>>> GetPagedAsync<TProperty>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TProperty>> orderBy, int pageIndex, int pageSize, bool isDesc = false);
+
+        /// <summary>
+        /// Sql分页方法
+        /// </summary>
+        /// <param name="totalCount">总数据条数</param>
+        /// <param name="sql">分页Sql</param>
+        /// <param name="orderBy">排序规则</param>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据条数</param>
+        /// <param name="parameters">参数数组</param>
+        /// <returns></returns>
+        List<TEntityDto> GetPaged(out int totalCount, string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+
+        /// <summary>
+        /// Sql分页方法
+        /// </summary>
+        /// <param name="sql">分页Sql</param>
+        /// <param name="orderBy">排序规则</param>
+        /// <param name="pageIndex">当前页码</param>
+        /// <param name="pageSize">每页数据条数</param>
+        /// <param name="parameters">参数数组</param>
+        /// <returns></returns>
+        Task<Tuple<int, List<TEntityDto>>> GetPagedAsync(string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+
+        /// <summary>
+        /// 执行原始Sql查询
+        /// </summary>
+        /// <param name="sql">sql</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>受影响的行数</returns>
+        int ExecuteSql(string sql, params object[] parameters);
+
+        /// <summary>
+        /// 执行原始Sql查询
+        /// </summary>
+        /// <param name="sql">sql</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>受影响的行数</returns>
+        Task<int> ExecuteSqlAsync(string sql, params object[] parameters);
 
         /// <summary>
         /// Query
@@ -128,6 +190,8 @@ namespace CoreSolution.Repository
         /// <param name="id">主键id</param>
         /// <returns>EntityDto</returns>
         TEntityDto Load(TPrimaryKey id);
+
+        Task<TEntityDto> LoadAsync(TPrimaryKey id);
 
         #endregion
 
@@ -312,6 +376,10 @@ namespace CoreSolution.Repository
         /// <param name="predicate">lambda</param>
         /// <returns>long</returns>
         Task<long> LongCountAsync(Expression<Func<TEntity, bool>> predicate);
+
+        bool Any(Expression<Func<TEntity, bool>> predicate);
+
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 
         #endregion
     }

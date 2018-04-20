@@ -17,67 +17,6 @@ namespace CoreSolution.Service
 {
     public sealed class UserService : EfCoreRepositoryBase<User, UserDto, int>, IUserService
     {
-        public override void Delete(UserDto entityDto)
-        {
-            if (entityDto != null)
-            {
-                var entry = _dbContext.Entry(Mapper.Map<User>(entityDto));
-                entry.State = EntityState.Deleted;
-                _dbContext.SaveChanges();
-            }
-        }
-
-        public override async Task DeleteAsync(UserDto entityDto)
-        {
-            if (entityDto != null)
-            {
-                var entry = _dbContext.Entry(Mapper.Map<User>(entityDto));
-                entry.State = EntityState.Deleted;
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public override void Delete(int id)
-        {
-            if (id > 0)
-            {
-                var user = Single(i => i.Id == id);
-                var entry = _dbContext.Entry(user);
-                entry.State = EntityState.Deleted;
-                _dbContext.SaveChanges();
-            }
-        }
-
-        public override async Task DeleteAsync(int id)
-        {
-            if (id > 0)
-            {
-                var user = await SingleAsync(i => i.Id == id);
-                var entry = _dbContext.Entry(user);
-                entry.State = EntityState.Deleted;
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public override async Task DeleteAsync(Expression<Func<User, bool>> predicate)
-        {
-            var users = GetAll().Where(predicate);
-            if (await users.AnyAsync())
-            {
-                await users.ForEachAsync(i =>
-               {
-                   var entry = _dbContext.Entry(i);
-                   entry.State = EntityState.Deleted;
-               });
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public override IQueryable<User> GetAll()
-        {
-            return _dbContext.Users;
-        }
-
         public override IQueryable<User> GetAllIncluding()
         {
             return GetAll()
@@ -86,68 +25,38 @@ namespace CoreSolution.Service
                 .Include(i => i.UserRoles);
         }
 
-        public override UserDto Insert(UserDto entityDto)
-        {
-            if (entityDto != null)
-            {
-                _dbContext.Users.Add(Mapper.Map<User>(entityDto));
-                _dbContext.SaveChanges();
-            }
-            return entityDto;
-        }
-
         public override async Task<UserDto> InsertAsync(UserDto entityDto)
         {
             if (entityDto != null)
             {
-
-                _dbContext.Users.Add(Mapper.Map<User>(entityDto));
-                await _dbContext.SaveChangesAsync();
-            }
-            return entityDto;
-        }
-
-        public override UserDto Update(UserDto entityDto)
-        {
-            if (entityDto != null && entityDto.Id > 0)
-            {
-                var entity = GetAll().SingleOrDefault(i => i.Id == entityDto.Id);
-                if (entity != null)
+                //检查用户名是否存在
+                bool r = await CheckUserNameDupAsync(entityDto.UserName);
+                if (!r)
                 {
-                    entity = Mapper.Map<User>(entityDto);
-                    _dbContext.SaveChanges();
+                    await _dbContext.Users.AddAsync(Mapper.Map<User>(entityDto));
+                    await _dbContext.SaveChangesAsync();
                 }
-            }
-            return entityDto;
-        }
-
-        public override async Task<UserDto> UpdateAsync(UserDto entityDto)
-        {
-            if (entityDto != null && entityDto.Id > 0)
-            {
-                var entity = await GetAll().SingleOrDefaultAsync(i => i.Id == entityDto.Id);
-                if (entity != null)
+                else
                 {
-                    entity = Mapper.Map<User>(entityDto);
+                    throw new Exception($"已存在name={entityDto.UserName}的用户");
                 }
-                await _dbContext.SaveChangesAsync();
             }
             return entityDto;
         }
 
         public Task<bool> CheckUserNameDupAsync(string userName)
         {
-            throw new NotImplementedException();
+            return AnyAsync(i => i.UserName == userName);
         }
 
         public Task<bool> CheckPhoneDupAsync(string phoneNum)
         {
-            throw new NotImplementedException();
+            return AnyAsync(i => i.PhoneNum == phoneNum);
         }
 
         public Task<bool> CheckEmailDupAsync(string email)
         {
-            throw new NotImplementedException();
+            return AnyAsync(i => i.Email == email);
         }
 
         public async Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password)
@@ -155,7 +64,7 @@ namespace CoreSolution.Service
             var userDto = await GetUserByUserNameOrEmailOrPhoneAsync(userNameOrEmailOrPhone);
             if (userDto != null)
             {
-                if (userDto.Password == password.ToMd5())
+                if (userDto.Password == (password.ToMd5() + userDto.Salt).ToMd5())
                 {
                     return LoginResults.Success;
                 }
@@ -175,29 +84,50 @@ namespace CoreSolution.Service
             UserDto userDto;
             if (userNameOrEmailOrPhone.IsNumeric())
             {
-                userDto = await SingleOrDefaultAsync(i => i.PhoneNum == userNameOrEmailOrPhone);
+                userDto = await SingleOrDefaultAsync(i => i.PhoneNum == userNameOrEmailOrPhone && i.IsPhoneNumConfirmed);
             }
             else
             {
                 userDto = await SingleOrDefaultAsync(i =>
-                    i.UserName == userNameOrEmailOrPhone || i.IsEmailConfirmed && i.Email == userNameOrEmailOrPhone);
+                    i.UserName == userNameOrEmailOrPhone || i.Email == userNameOrEmailOrPhone && i.IsEmailConfirmed);
             }
             return userDto;
         }
 
-        public Task<UserDto> GetUserByEmailAsync(string email)
+        public async Task<UserDto> GetUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var users = GetAll().Where(i => i.Email == email && i.IsEmailConfirmed);
+            if (!await users.AnyAsync())
+            {
+                throw new Exception($"不存在email={email}的用户");
+            }
+            var user = await users.SingleAsync();
+            user.Password = null;
+            return Mapper.Map<UserDto>(user);
         }
 
-        public Task<UserDto> GetUserByPhoneNumAsync(string phoneNum)
+        public async Task<UserDto> GetUserByPhoneNumAsync(string phoneNum)
         {
-            throw new NotImplementedException();
+            var users = GetAll().Where(i => i.PhoneNum == phoneNum && i.IsPhoneNumConfirmed);
+            if (!await users.AnyAsync())
+            {
+                throw new Exception($"不存在phoneNum={phoneNum}的用户");
+            }
+            var user = await users.SingleAsync();
+            user.Password = null;
+            return Mapper.Map<UserDto>(user);
         }
 
-        public Task<UserDto> GetUserByUserNameAsync(string userName)
+        public async Task<UserDto> GetUserByUserNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            var users = GetAll().Where(i => i.UserName == userName);
+            if (!await users.AnyAsync())
+            {
+                throw new Exception($"不存在name={userName}的用户");
+            }
+            var user = await users.SingleAsync();
+            user.Password = null;
+            return Mapper.Map<UserDto>(user);
         }
     }
 }

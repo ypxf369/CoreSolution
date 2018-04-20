@@ -10,7 +10,7 @@ namespace CoreSolution.EntityFrameworkCore
 {
     public partial class EfCoreDbContext : DbContext
     {
-        //public CoreDbContext()
+        //public EfCoreDbContext()
         //{
         //    Database.EnsureCreated();
         //}
@@ -44,5 +44,9 @@ namespace CoreSolution.EntityFrameworkCore
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<MenuItem> MenuItems { get; set; }
+        public virtual DbSet<AuditLog> AuditLogs { get; set; }
+
     }
 }

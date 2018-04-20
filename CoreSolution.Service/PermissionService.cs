@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CoreSolution.Domain.Entities;
 using CoreSolution.Dto;
@@ -16,39 +17,30 @@ namespace CoreSolution.Service
 {
     public sealed class PermissionService : EfCoreRepositoryBase<Permission, PermissionDto, int>, IPermissionService
     {
-        public override void Delete(PermissionDto entityDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task DeleteAsync(PermissionDto entityDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task DeleteAsync(Expression<Func<Permission, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IQueryable<Permission> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public override IQueryable<Permission> GetAllIncluding()
         {
-            throw new NotImplementedException();
+            return GetAll()
+                .Include(i => i.CreatorUser)
+                .Include(i => i.DeleterUser)
+                .Include(i => i.Role);
+        }
+
+        public override async Task<PermissionDto> InsertAsync(PermissionDto entityDto)
+        {
+            if (entityDto != null)
+            {
+                bool r = await CheckPermissionNameDupAsync(entityDto.Name);
+                if (!r)
+                {
+                    await _dbContext.Permissions.AddAsync(Mapper.Map<Permission>(entityDto));
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception($"已存在name={entityDto.Name}的权限");
+                }
+            }
+            return entityDto;
         }
 
         public async Task<IList<PermissionDto>> GetPermissionsByUserIdAsync(int userId)
@@ -63,24 +55,9 @@ namespace CoreSolution.Service
                 .ToListAsync();
         }
 
-        public override PermissionDto Insert(PermissionDto entityDto)
+        public Task<bool> CheckPermissionNameDupAsync(string permissionName)
         {
-            throw new NotImplementedException();
-        }
-
-        public override Task<PermissionDto> InsertAsync(PermissionDto entityDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override PermissionDto Update(PermissionDto entityDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<PermissionDto> UpdateAsync(PermissionDto entityDto)
-        {
-            throw new NotImplementedException();
+            return AnyAsync(i => i.Name == permissionName);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace CoreSolution.Domain.Entities.Base
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
         public virtual TPrimaryKey Id { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
 
         public override bool Equals(object obj)

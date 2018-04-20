@@ -18,5 +18,6 @@ namespace CoreSolution.Domain.Entities.Base
     public interface IEntity<TPrimaryKey>
     {
         TPrimaryKey Id { get; set; }
+        bool IsDeleted { get; set; }
     }
 }

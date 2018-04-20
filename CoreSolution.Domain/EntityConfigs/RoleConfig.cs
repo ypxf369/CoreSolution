@@ -19,6 +19,8 @@ namespace CoreSolution.Domain.EntityConfigs
             builder.Property(i => i.CreationTime);
             builder.Property(i => i.LastModificationTime);
             builder.Property(i => i.DeletionTime);
+            builder.HasOne(i => i.CreatorUser).WithMany().HasForeignKey(i => i.CreatorUserId);
+            builder.HasOne(i => i.DeleterUser).WithMany().HasForeignKey(i => i.DeleterUserId);
         }
     }
 }

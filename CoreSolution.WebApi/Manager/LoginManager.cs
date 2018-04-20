@@ -11,6 +11,7 @@ namespace CoreSolution.WebApi.Manager
         private static string TOKEN_PREFIX = "Api.User.Token.";
         private static string USERID_PREFIX = "Api.User.UserId.";
         private static string USERPERMISSIONS_PREFIX = "Api.User.Permissions.";
+        private static string USERROLES_PREFIX = "Api.User.Roles.";
 
         public static async Task LoginAsync(string token, int userId)
         {
@@ -29,9 +30,19 @@ namespace CoreSolution.WebApi.Manager
             await RedisHelper.StringSetAsync(USERPERMISSIONS_PREFIX + userId, permissions, TimeSpan.FromHours(3));
         }
 
+        public static async Task SaveCurrentUserRolesAsync(string[] roles, int userId)
+        {
+            await RedisHelper.StringSetAsync(USERROLES_PREFIX + userId, roles, TimeSpan.FromHours(3));
+        }
+
         public static async Task<string[]> GetCurrentUserPermissionsAsync(int userId)
         {
             return await RedisHelper.StringGetAsync<string[]>(USERPERMISSIONS_PREFIX + userId);
+        }
+
+        public static async Task<string[]> GetCurrentUserRolesAsync(int userId)
+        {
+            return await RedisHelper.StringGetAsync<string[]>(USERROLES_PREFIX + userId);
         }
 
         public static async Task<int?> GetUserIdAsync(string token)

@@ -18,6 +18,7 @@ namespace CoreSolution.Repository
     {
         public object DbContext { get; set; }
 
+
         public abstract IQueryable<TEntity> GetAll();
 
         public virtual List<TEntityDto> GetAllList()
@@ -40,6 +41,40 @@ namespace CoreSolution.Repository
             return GetAll().Where(predicate).ProjectTo<TEntityDto>().ToListAsync();
         }
 
+        public virtual List<TEntityDto> GetPaged<TProperty>(out int totalCount, Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TProperty>> orderBy, int pageIndex, int pageSize, bool isDesc = false)
+        {
+            var entities = GetAll().Where(predicate);
+            totalCount = entities.Count();
+            entities = isDesc ? entities.OrderByDescending(orderBy) : entities.OrderBy(orderBy);
+            return entities
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ProjectTo<TEntityDto>()
+                .ToList();
+        }
+
+        public virtual async Task<Tuple<int, List<TEntityDto>>> GetPagedAsync<TProperty>(Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, TProperty>> orderBy, int pageIndex, int pageSize, bool isDesc = false)
+        {
+            var entities = GetAll().Where(predicate);
+            int totalCount = await entities.CountAsync();
+            entities = isDesc ? entities.OrderByDescending(orderBy) : entities.OrderBy(orderBy);
+            var data = await entities
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ProjectTo<TEntityDto>()
+                .ToListAsync();
+            return new Tuple<int, List<TEntityDto>>(totalCount, data);
+        }
+
+        public abstract List<TEntityDto> GetPaged(out int totalCount, string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+
+        public abstract Task<Tuple<int, List<TEntityDto>>> GetPagedAsync(string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+
+        public abstract int ExecuteSql(string sql, params object[] parameters);
+
+        public abstract Task<int> ExecuteSqlAsync(string sql, params object[] parameters);
+
         public virtual T Query<T>(Func<IQueryable<TEntity>, T> queryMethod)
         {
             return queryMethod(GetAll());
@@ -47,24 +82,12 @@ namespace CoreSolution.Repository
 
         public virtual TEntityDto Get(TPrimaryKey id)
         {
-            var entity = FirstOrDefault(id);
-            if (entity == null)
-            {
-                throw new Exception($"未找到id={id}的Entity!");
-            }
-
-            return entity;
+            return FirstOrDefault(id);
         }
 
         public virtual async Task<TEntityDto> GetAsync(TPrimaryKey id)
         {
-            var entity = await FirstOrDefaultAsync(id);
-            if (entity == null)
-            {
-                throw new Exception($"未找到id={id}的Entity!");
-            }
-
-            return entity;
+            return await FirstOrDefaultAsync(id);
         }
 
         public virtual TEntityDto Single(Expression<Func<TEntity, bool>> predicate)
@@ -110,6 +133,11 @@ namespace CoreSolution.Repository
         public virtual TEntityDto Load(TPrimaryKey id)
         {
             return Get(id);
+        }
+
+        public virtual Task<TEntityDto> LoadAsync(TPrimaryKey id)
+        {
+            return GetAsync(id);
         }
 
         public abstract TEntityDto Insert(TEntityDto entityDto);
@@ -174,13 +202,7 @@ namespace CoreSolution.Repository
 
         public abstract Task DeleteAsync(TPrimaryKey id);
 
-        public virtual void Delete(Expression<Func<TEntity, bool>> predicate)
-        {
-            foreach (var entity in GetAll().Where(predicate).ToList())
-            {
-                Delete(Mapper.Map<TEntityDto>(entity));
-            }
-        }
+        public abstract void Delete(Expression<Func<TEntity, bool>> predicate);
 
         public abstract Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
@@ -222,6 +244,16 @@ namespace CoreSolution.Repository
         public virtual Task<long> LongCountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().LongCountAsync(predicate);
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
+        {
+            return GetAll().Any(predicate);
+        }
+
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return GetAll().AnyAsync(predicate);
         }
 
         protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)

@@ -10,8 +10,13 @@ using CoreSolution.IService.Convention;
 
 namespace CoreSolution.IService
 {
-    public interface IUserService : IEfCoreRepository<User,UserDto>, IServiceSupport
+    public interface IUserService : IEfCoreRepository<User, UserDto>, IServiceSupport
     {
+        /// <summary>
+        /// 检查用户名是否存在，true存在，false不存在
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <returns></returns>
         Task<bool> CheckUserNameDupAsync(string userName);
         Task<bool> CheckPhoneDupAsync(string phoneNum);
         Task<bool> CheckEmailDupAsync(string email);

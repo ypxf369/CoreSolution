@@ -16,6 +16,7 @@ namespace CoreSolution.AutoMapper.Extensions
         public static T MapTo<T>(this object obj)
         {
             if (obj == null) return default(T);
+            //Mapper.Initialize(i => i.CreateMap(obj.GetType(), typeof(T)));
             return AutoMapperConfiguration.Mapper.Map<T>(obj);
         }
         /// <summary>

@@ -5,7 +5,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.Dto
 {
-    public class PermissionDto : EntityDto, IFullEntityDto
+    public class PermissionDto : EntityBaseFullDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,9 +13,6 @@ namespace CoreSolution.Dto
         public string CreatorUserName { get; set; }
         public int? DeleterUserId { get; set; }
         public string DeleterUserName { get; set; }
-        public DateTime CreationTime { get; set; }
-        public DateTime? LastModificationTime { get; set; }
-        public DateTime? DeletionTime { get; set; }
         public int RoleId { get; set; }
         public string RoleName { get; set; }
     }

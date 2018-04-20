@@ -26,7 +26,7 @@ namespace CoreSolution.Dto.Base
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
     public class EntityDto<TPrimaryKey> : IEntityDto<TPrimaryKey>
     {
-        public TPrimaryKey Id { get; set; }
+        public virtual TPrimaryKey Id { get; set; }
 
         public EntityDto()
         {

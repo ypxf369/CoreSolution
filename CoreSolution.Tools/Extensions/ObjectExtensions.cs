@@ -30,7 +30,7 @@ namespace CoreSolution.Tools.Extensions
         public static T To<T>(this object obj)
             where T : struct
         {
-            if (typeof(T) == typeof(Guid))
+            if (typeof(T) == typeof(int))
             {
                 return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(obj.ToString());
             }

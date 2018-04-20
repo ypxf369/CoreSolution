@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
+using CoreSolution.AutoMapper.Configuration;
 using CoreSolution.AutoMapper.Startup;
 using CoreSolution.IService.Convention;
 using CoreSolution.WebApi.Interceptor;
@@ -76,6 +76,7 @@ namespace CoreSolution.WebApi
 
             var assemblys = Assembly.Load("CoreSolution.Service");
             var baseType = typeof(IServiceSupport);
+
             builder.RegisterAssemblyTypes(assemblys)
                 .Where(i => baseType.IsAssignableFrom(i) && i != baseType)
                 .AsImplementedInterfaces();
