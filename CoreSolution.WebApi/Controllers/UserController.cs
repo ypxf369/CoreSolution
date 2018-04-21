@@ -13,6 +13,7 @@ using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
 using CoreSolution.WebApi.Interceptor;
 using CoreSolution.WebApi.Manager;
+using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -197,7 +198,7 @@ namespace CoreSolution.WebApi.Controllers
         public async Task<JsonResult> GetUsersPaged(int pageIndex = 1, int pageSize = 10)
         {
             var result = await _userService.GetPagedAsync(i => true, i => i.CreationTime, pageIndex, pageSize);
-            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new { totalCount = result.Item1, data = Mapper.Map<IList<OutputUserModel>>(result.Item2) });
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputUserModel> { Total = result.Item1, List = Mapper.Map<IList<OutputUserModel>>(result.Item2) });
         }
 
         /// <summary>

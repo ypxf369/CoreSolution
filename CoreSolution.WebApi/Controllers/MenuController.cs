@@ -10,6 +10,7 @@ using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
 using CoreSolution.WebApi.Interceptor;
 using CoreSolution.WebApi.Manager;
+using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.Menu;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -266,7 +267,7 @@ namespace CoreSolution.WebApi.Controllers
             string token = HttpContext.Request.Headers["token"];
             var userId = (await LoginManager.GetUserIdAsync(token)).GetValueOrDefault();
             var result = await _menuService.GetUserMenuList(userId);
-            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new { totalCount = result.Count, data = Mapper.Map<IList<OutputMenuModel>>(result) });
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputMenuModel> { Total = result.Count, List = Mapper.Map<IList<OutputMenuModel>>(result) });
         }
     }
 }

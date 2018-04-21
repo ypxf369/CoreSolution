@@ -10,6 +10,7 @@ using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
 using CoreSolution.WebApi.Interceptor;
 using CoreSolution.WebApi.Manager;
+using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.Role;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -129,7 +130,7 @@ namespace CoreSolution.WebApi.Controllers
         public async Task<JsonResult> GetRoleList()
         {
             var result = await _roleService.GetAllListAsync();
-            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new { totalCount = result.Count, data = Mapper.Map<IList<OutputRoleModel>>(result) });
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputRoleModel> { Total = result.Count, List = Mapper.Map<IList<OutputRoleModel>>(result) });
         }
     }
 }
