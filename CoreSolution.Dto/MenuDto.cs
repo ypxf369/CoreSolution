@@ -14,9 +14,9 @@ namespace CoreSolution.Dto
         public string ClassName { get; set; }
         public int OrderIn { get; set; }
         public int? CreatorUserId { get; set; }
-        public string CreatorUserName { get; set; }
+        public UserDto CreatorUser { get; set; }
         public int? DeleterUserId { get; set; }
-        public string DeleterUserName { get; set; }
+        public UserDto DeleterUser { get; set; }
         public IList<MenuItemDto> MenuItems { get; set; }
     }
 }

@@ -15,9 +15,9 @@ namespace CoreSolution.Domain.Entities
         public bool IsPhoneNumConfirmed { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
-        public int? CreatorUserId { get; set; }
+        public Guid? CreatorUserId { get; set; }
         public virtual User CreatorUser { get; set; }
-        public int? DeleterUserId { get; set; }
+        public Guid? DeleterUserId { get; set; }
         public virtual User DeleterUser { get; set; }
         public bool IsLocked { get; set; } = false;
         public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();

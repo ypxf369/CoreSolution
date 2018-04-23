@@ -28,8 +28,8 @@ namespace CoreSolution.WebApi.Models.User
         /// </summary>
         public RegisterType RegisterType { get; set; }
         /// <summary>
-        /// 角色字典（key为角色Id，value为角色名称）（当且仅当RegisterType为Assign（分配）时，该字段才有用）
+        /// 角色Id数组
         /// </summary>
-        public IDictionary<int,string> Roles { get; set; }
+        public int[] Roles { get; set; }
     }
 }

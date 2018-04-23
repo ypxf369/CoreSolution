@@ -11,9 +11,7 @@ namespace CoreSolution.AutoMapper.MapProfile
     {
         public UserRoleProfile()
         {
-            CreateMap<UserRole, UserRoleDto>()
-                .ForMember(i => i.UserName, i => i.MapFrom(m => m.User != null ? m.User.UserName : null))
-                .ForMember(i => i.RoleName, i => i.MapFrom(m => m.Role != null ? m.Role.Name : null));
+            CreateMap<UserRole, UserRoleDto>();
 
             CreateMap<UserRoleDto, UserRole>()
                 .ForMember(i => i.IsDeleted, i => i.Ignore())

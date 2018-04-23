@@ -73,7 +73,7 @@ namespace CoreSolution.WebApi.Controllers
             };
             if (inputRegisterModel.RegisterType == RegisterType.Assign)
             {
-                userDto.Roles = inputRegisterModel.Roles;
+                userDto.UserRoles = inputRegisterModel.Roles.Select(i => new UserRoleDto { User = userDto, RoleId = i }).ToList();
                 string token = HttpContext.Request.Headers["token"];
                 var userId = (await LoginManager.GetUserIdAsync(token)).GetValueOrDefault();
                 userDto.CreatorUserId = userId;
