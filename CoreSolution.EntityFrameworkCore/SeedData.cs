@@ -17,7 +17,8 @@ namespace CoreSolution.EntityFrameworkCore
             {
                 UserName = "admin",
                 RealName = "admin",
-                Password = ("123456".ToMd5() + new Random().Next(100000, 999999)).ToMd5()
+                Salt = "123456",
+                Password = ("123456".ToMd5() + "123456").ToMd5()
             };
             var role = new Role
             {
