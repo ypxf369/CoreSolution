@@ -192,12 +192,29 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
         {
             if (entityDto != null)
             {
-                var dto = Load(entityDto.Id);
-                if (dto != null)
+                var entity = _dbContext.Find<TEntity>(entityDto.Id);
+                if (entity != null)
                 {
-                    var entity = Mapper.Map<TEntity>(dto);
+                    var entityType = entity.GetType();
+                    var dtoType = entityDto.GetType();
+                    var entityProperties = entityType.GetProperties();
+                    var dtoProperties = dtoType.GetProperties().ToList();
+                    foreach (var ePro in entityProperties)
+                    {
+                        if (ePro.Name == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        foreach (var dPro in dtoProperties)
+                        {
+                            var value = dPro.GetValue(entityDto);
+                            if (ePro.Name == dPro.Name && ePro.GetValue(entity) != value)
+                            {
+                                ePro.SetValue(entity, value);
+                                dtoProperties.Remove(dPro);
+                            }
+                            break;
+                        }
+                    }
                     _dbContext.SaveChanges();
-                    return dto;
+                    return entityDto;
                 }
             }
             return null;
@@ -207,12 +224,29 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
         {
             if (entityDto != null)
             {
-                var dto = await LoadAsync(entityDto.Id);
-                if (dto != null)
+                var entity = await _dbContext.FindAsync<TEntity>(entityDto.Id);
+                if (entity != null)
                 {
-                    var entity = Mapper.Map<TEntity>(dto);
+                    var entityType = entity.GetType();
+                    var dtoType = entityDto.GetType();
+                    var entityProperties = entityType.GetProperties();
+                    var dtoProperties = dtoType.GetProperties().ToList();
+                    foreach (var ePro in entityProperties)
+                    {
+                        if (ePro.Name == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        foreach (var dPro in dtoProperties)
+                        {
+                            var value = dPro.GetValue(entityDto);
+                            if (ePro.Name == dPro.Name && ePro.GetValue(entity) != value)
+                            {
+                                ePro.SetValue(entity, value);
+                                dtoProperties.Remove(dPro);
+                            }
+                            break;
+                        }
+                    }
                     await _dbContext.SaveChangesAsync();
-                    return dto;
+                    return entityDto;
                 }
             }
             return null;
@@ -220,52 +254,40 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
 
         public override void Delete(TEntityDto entityDto)
         {
-            var dto = Load(entityDto.Id);
-            if (dto != null)
+            var entity = _dbContext.Find<TEntity>(entityDto.Id);
+            if (entity != null)
             {
-                var entity = Mapper.Map<TEntity>(dto);
                 entity.IsDeleted = true;
-                var entry = _dbContext.Entry<TEntity>(entity);
-                entry.State = EntityState.Modified;
                 _dbContext.SaveChanges();
             }
         }
 
         public override async Task DeleteAsync(TEntityDto entityDto)
         {
-            var dto = await LoadAsync(entityDto.Id);
-            if (dto != null)
+            var entity = await _dbContext.FindAsync<TEntity>(entityDto.Id);
+            if (entity != null)
             {
-                var entity = Mapper.Map<TEntity>(dto);
                 entity.IsDeleted = true;
-                var entry = _dbContext.Entry<TEntity>(entity);
-                entry.State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
         }
 
         public override void Delete(TPrimaryKey id)
         {
-            var dto = Load(id);
-            if (dto != null)
+            var entity = _dbContext.Find<TEntity>(id);
+            if (entity != null)
             {
-                var entity = Mapper.Map<TEntity>(dto);
                 entity.IsDeleted = true;
-                var entry = _dbContext.Entry<TEntity>(entity);
-                entry.State = EntityState.Modified;
                 _dbContext.SaveChanges();
             }
         }
 
         public override async Task DeleteAsync(TPrimaryKey id)
         {
-            var dto = await LoadAsync(id);
-            if (dto != null)
+            var entity = await _dbContext.FindAsync<TEntity>(id);
+            if (entity != null)
             {
-                var entity = Mapper.Map<TEntity>(dto);
                 entity.IsDeleted = true;
-                var entry = _dbContext.Entry<TEntity>(entity);
-                entry.State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -278,8 +300,6 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 entities.ToList().ForEach(i =>
                 {
                     i.IsDeleted = true;
-                    var entry = _dbContext.Entry<TEntity>(i);
-                    entry.State = EntityState.Modified;
                 });
                 _dbContext.SaveChanges();
             }
@@ -293,8 +313,6 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 await entities.ForEachAsync(i =>
                 {
                     i.IsDeleted = true;
-                    var entry = _dbContext.Entry<TEntity>(i);
-                    entry.State = EntityState.Modified;
                 });
                 await _dbContext.SaveChangesAsync();
             }
