@@ -15,6 +15,7 @@ using CoreSolution.WebApi.Interceptor;
 using CoreSolution.WebApi.Manager;
 using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.User;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace CoreSolution.WebApi.Controllers
     /// <summary>
     /// 用户操作控制器
     /// </summary>
+    [EnableCors("AllowAllOrigin")]
     [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller

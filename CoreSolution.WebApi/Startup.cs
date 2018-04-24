@@ -54,6 +54,27 @@ namespace CoreSolution.WebApi
                 options.Filters.Add<AuditingFilter>();//审计日志过滤器
             });
 
+            //配置跨域处理
+            //string[] urls = Configuration.GetSection("AllowCors:AllowOrigins").Value.Split(",");
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigin", i =>
+                {
+                    //i.WithOrigins(urls)//允许指定主机列表访问
+                    i.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();//允许处理cookie
+                });
+                //options.AddPolicy("AllowOrigins", i =>
+                //{
+                //    i.WithOrigins(urls)
+                //    .AllowAnyHeader()
+                //    .AllowAnyMethod()
+                //    .AllowCredentials();
+                //});
+            });
+
             //配置Swagger
             services.AddSwaggerGen(i =>
             {
@@ -93,6 +114,9 @@ namespace CoreSolution.WebApi
             }
             AutoMapperStartup.Register();//加载AutoMapper配置项
             app.UseMvc();
+
+            //使用跨域
+            app.UseCors("AllowAllOrigin");
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
