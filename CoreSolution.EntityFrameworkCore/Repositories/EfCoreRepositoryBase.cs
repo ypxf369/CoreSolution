@@ -201,16 +201,20 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                     var dtoProperties = dtoType.GetProperties().ToList();
                     foreach (var ePro in entityProperties)
                     {
-                        if (ePro.Name == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        string eName = ePro.Name;
+                        if (eName == nameof(Entity<TPrimaryKey>.Id)) continue;
                         foreach (var dPro in dtoProperties)
                         {
-                            var value = dPro.GetValue(entityDto);
-                            if (ePro.Name == dPro.Name && ePro.GetValue(entity) != value)
+                            if (eName == dPro.Name)
                             {
-                                ePro.SetValue(entity, value);
-                                dtoProperties.Remove(dPro);
+                                var value = dPro.GetValue(entityDto);
+                                if (ePro.GetValue(entity) != value)
+                                {
+                                    ePro.SetValue(entity, value);
+                                    dtoProperties.Remove(dPro);
+                                    break;
+                                }
                             }
-                            break;
                         }
                     }
                     _dbContext.SaveChanges();
@@ -233,16 +237,20 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                     var dtoProperties = dtoType.GetProperties().ToList();
                     foreach (var ePro in entityProperties)
                     {
-                        if (ePro.Name == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        string eName = ePro.Name;
+                        if (eName == nameof(Entity<TPrimaryKey>.Id)) continue;
                         foreach (var dPro in dtoProperties)
                         {
-                            var value = dPro.GetValue(entityDto);
-                            if (ePro.Name == dPro.Name && ePro.GetValue(entity) != value)
+                            if (eName == dPro.Name)
                             {
-                                ePro.SetValue(entity, value);
-                                dtoProperties.Remove(dPro);
+                                var value = dPro.GetValue(entityDto);
+                                if (ePro.GetValue(entity) != value)
+                                {
+                                    ePro.SetValue(entity, value);
+                                    dtoProperties.Remove(dPro);
+                                    break;
+                                }
                             }
-                            break;
                         }
                     }
                     await _dbContext.SaveChangesAsync();
