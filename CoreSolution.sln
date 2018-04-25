@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreSolution.Console.Test",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreSolution.AutoMapper", "CoreSolution.AutoMapper\CoreSolution.AutoMapper.csproj", "{078FFD1D-885A-44C8-B300-AC301E5B1BE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreSolution.EntityFrameworkCore.Test", "CoreSolution.EntityFrameworkCore.Test\CoreSolution.EntityFrameworkCore.Test.csproj", "{E078B19D-9A12-4661-AEA8-9A850AB064AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{078FFD1D-885A-44C8-B300-AC301E5B1BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{078FFD1D-885A-44C8-B300-AC301E5B1BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{078FFD1D-885A-44C8-B300-AC301E5B1BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E078B19D-9A12-4661-AEA8-9A850AB064AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E078B19D-9A12-4661-AEA8-9A850AB064AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E078B19D-9A12-4661-AEA8-9A850AB064AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E078B19D-9A12-4661-AEA8-9A850AB064AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{CEFD4F8B-0282-48E0-BEEA-45441D5F9279} = {B7C78844-DDA7-4931-A137-DD7F1BFFA7E7}
 		{D1F0FB29-A5EF-45C2-B058-71A2879ACDC3} = {23F8D0E3-15F6-42DC-8F51-4AFC0A441340}
 		{078FFD1D-885A-44C8-B300-AC301E5B1BE6} = {1971A178-FF91-4FAE-AC16-244B6E2060CB}
+		{E078B19D-9A12-4661-AEA8-9A850AB064AF} = {23F8D0E3-15F6-42DC-8F51-4AFC0A441340}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {444FF868-61E4-4D2E-993C-306228042DFB}

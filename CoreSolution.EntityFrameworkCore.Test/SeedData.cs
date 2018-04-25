@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CoreSolution.Domain.Entities;
+﻿using CoreSolution.Domain.Entities;
 using CoreSolution.Tools.Extensions;
 
-namespace CoreSolution.EntityFrameworkCore
+namespace CoreSolution.EntityFrameworkCore.Test
 {
     /// <summary>
     /// 种子数据

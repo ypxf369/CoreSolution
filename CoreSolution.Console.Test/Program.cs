@@ -21,15 +21,6 @@ namespace CoreSolution.Console.Test
     {
         static void Main(string[] args)
         {
-            #region 生成数据库
-            //using (var dbContext = new EfCoreDbContext())
-            //{
-            //    //dbContext.Users.ToList();
-            //    SeedData.Initialize(dbContext);
-            //}
-            //System.Console.WriteLine("数据库生成成功");
-            //System.Console.ReadKey();
-            #endregion
 
             #region AutoMapper测试
             AutoMapperStartup.Register();
