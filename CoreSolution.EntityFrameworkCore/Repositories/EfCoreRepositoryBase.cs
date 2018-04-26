@@ -202,13 +202,22 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                     foreach (var ePro in entityProperties)
                     {
                         string eName = ePro.Name;
-                        if (eName == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        switch (eName)
+                        {
+                            case nameof(Entity<TPrimaryKey>.Id):
+                            case nameof(Entity<TPrimaryKey>.IsDeleted):
+                            case nameof(ICreationTime.CreationTime):
+                                continue;
+                            case nameof(IModificationTime.LastModificationTime):
+                                ePro.SetValue(entity, DateTime.Now);
+                                continue;
+                        }
                         foreach (var dPro in dtoProperties)
                         {
                             if (eName == dPro.Name)
                             {
                                 var value = dPro.GetValue(entityDto);
-                                if (ePro.GetValue(entity) != value)
+                                if (value != null && ePro.GetValue(entity) != value)
                                 {
                                     ePro.SetValue(entity, value);
                                     dtoProperties.Remove(dPro);
@@ -238,13 +247,27 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                     foreach (var ePro in entityProperties)
                     {
                         string eName = ePro.Name;
-                        if (eName == nameof(Entity<TPrimaryKey>.Id)) continue;
+                        switch (eName)
+                        {
+                            case nameof(Entity<TPrimaryKey>.Id):
+                            case nameof(Entity<TPrimaryKey>.IsDeleted):
+                            case nameof(ICreationTime.CreationTime):
+                                continue;
+                            case nameof(IModificationTime.LastModificationTime):
+                                ePro.SetValue(entity, DateTime.Now);
+                                continue;
+                        }
                         foreach (var dPro in dtoProperties)
                         {
                             if (eName == dPro.Name)
                             {
                                 var value = dPro.GetValue(entityDto);
-                                if (ePro.GetValue(entity) != value)
+                                //if (value == null && dPro.PropertyType.IsGenericType &&
+                                //    dPro.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                //{
+
+                                //}
+                                if (value != null && ePro.GetValue(entity) != value)
                                 {
                                     ePro.SetValue(entity, value);
                                     dtoProperties.Remove(dPro);
@@ -266,6 +289,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
             if (entity != null)
             {
                 entity.IsDeleted = true;
+                var entityType = entity.GetType();
+                var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                if (deletionTime != null)
+                {
+                    deletionTime.SetValue(entity, DateTime.Now);
+                }
                 _dbContext.SaveChanges();
             }
         }
@@ -276,6 +305,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
             if (entity != null)
             {
                 entity.IsDeleted = true;
+                var entityType = entity.GetType();
+                var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                if (deletionTime != null)
+                {
+                    deletionTime.SetValue(entity, DateTime.Now);
+                }
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -286,6 +321,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
             if (entity != null)
             {
                 entity.IsDeleted = true;
+                var entityType = entity.GetType();
+                var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                if (deletionTime != null)
+                {
+                    deletionTime.SetValue(entity, DateTime.Now);
+                }
                 _dbContext.SaveChanges();
             }
         }
@@ -296,6 +337,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
             if (entity != null)
             {
                 entity.IsDeleted = true;
+                var entityType = entity.GetType();
+                var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                if (deletionTime != null)
+                {
+                    deletionTime.SetValue(entity, DateTime.Now);
+                }
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -308,6 +355,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 entities.ToList().ForEach(i =>
                 {
                     i.IsDeleted = true;
+                    var entityType = i.GetType();
+                    var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                    if (deletionTime != null)
+                    {
+                        deletionTime.SetValue(i, DateTime.Now);
+                    }
                 });
                 _dbContext.SaveChanges();
             }
@@ -321,6 +374,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 await entities.ForEachAsync(i =>
                 {
                     i.IsDeleted = true;
+                    var entityType = i.GetType();
+                    var deletionTime = entityType.GetProperty(nameof(IDeletionTime.DeletionTime));
+                    if (deletionTime != null)
+                    {
+                        deletionTime.SetValue(i, DateTime.Now);
+                    }
                 });
                 await _dbContext.SaveChangesAsync();
             }
