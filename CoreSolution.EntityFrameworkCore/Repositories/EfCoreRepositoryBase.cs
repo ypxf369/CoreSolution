@@ -217,6 +217,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                             if (eName == dPro.Name)
                             {
                                 var value = dPro.GetValue(entityDto);
+                                var dType = dPro.PropertyType;
+                                if (dType == typeof(int) || dType == typeof(long) || dType == typeof(Guid))
+                                {
+                                    object[] obj = { 0, new Guid() };
+                                    if (obj.Contains(value)) break;
+                                }
                                 if (value != null && ePro.GetValue(entity) != value)
                                 {
                                     ePro.SetValue(entity, value);
@@ -262,11 +268,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                             if (eName == dPro.Name)
                             {
                                 var value = dPro.GetValue(entityDto);
-                                //if (value == null && dPro.PropertyType.IsGenericType &&
-                                //    dPro.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                                //{
-
-                                //}
+                                var dType = dPro.PropertyType;
+                                if (dType == typeof(int) || dType == typeof(long) || dType == typeof(Guid))
+                                {
+                                    object[] obj = { 0, new Guid() };
+                                    if (obj.Contains(value)) break;
+                                }
                                 if (value != null && ePro.GetValue(entity) != value)
                                 {
                                     ePro.SetValue(entity, value);
