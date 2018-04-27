@@ -74,7 +74,8 @@ namespace CoreSolution.WebApi
                     i.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials();//允许处理cookie
+                        .AllowCredentials()//允许处理cookie
+                        .SetPreflightMaxAge(TimeSpan.FromMilliseconds(100000));//设置预检请求(OPTIONS)缓存时间100s
                 });
                 //options.AddPolicy("AllowOrigins", i =>
                 //{
