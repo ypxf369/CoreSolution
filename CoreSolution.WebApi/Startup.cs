@@ -15,6 +15,7 @@ using log4net.Config;
 using log4net.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -47,6 +48,15 @@ namespace CoreSolution.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            //设置接收文件长度的最大值。还要在上传方法上加上[DisableRequestSizeLimit]或者
+            //[RequestSizeLimit(3063160001)]Attribute
+            //services.Configure<FormOptions>(x =>
+            //{
+            //    x.ValueLengthLimit = int.MaxValue;
+            //    x.MultipartBodyLengthLimit = int.MaxValue;
+            //    x.MultipartHeadersLengthLimit = int.MaxValue;
+            //});
+
             //services.AddAutoMapper();
             services.AddMvc(options =>
             {
