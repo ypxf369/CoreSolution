@@ -88,6 +88,25 @@ namespace CoreSolution.Service
                                     {
                                         menuItemsThree.Remove(mi);
                                     }
+                                    else
+                                    {
+                                        var mItems = await _dbContext.MenuItems.Where(i => i.MenuItemId == mi.Id).ProjectTo<MenuItemDto>().ToListAsync();
+                                        mi.MenuItems = mItems;
+                                        if (!mi.MenuItems.IsNullOrEmpty())
+                                        {
+                                            var menuItemsFour = new List<MenuItemDto>();
+                                            menuItemsFour.AddRange(mi.MenuItems);
+                                            foreach (var m in mi.MenuItems)//第四层
+                                            {
+                                                if (m.RequiresAuthentication &&
+                                                    !userPermissionList.Contains(m.RequiredPermissionName))
+                                                {
+                                                    menuItemsFour.Remove(m);
+                                                }
+                                            }
+                                            mi.MenuItems = menuItemsFour;
+                                        }
+                                    }
                                 }
                                 menuItem.MenuItems = menuItemsThree;
                             }

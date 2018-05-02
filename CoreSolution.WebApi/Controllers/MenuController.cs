@@ -38,7 +38,7 @@ namespace CoreSolution.WebApi.Controllers
         }
 
         /// <summary>
-        /// 新增菜单（最大支持三级菜单）。200成功，400菜单名不能为空
+        /// 新增菜单。200成功，400菜单名不能为空
         /// </summary>
         /// <param name="inputMenuModel">菜单参数model</param>
         /// <returns></returns>
@@ -52,7 +52,7 @@ namespace CoreSolution.WebApi.Controllers
             }
             string token = HttpContext.Request.Headers["token"];
             var userId = (await LoginManager.GetUserIdAsync(token)).GetValueOrDefault();
-            var menuDto = new MenuDto //主菜单-第一层
+            var menuDto = new MenuDto
             {
                 Name = inputMenuModel.Name,
                 Url = inputMenuModel.Url,
@@ -62,57 +62,10 @@ namespace CoreSolution.WebApi.Controllers
                 OrderIn = inputMenuModel.OrderIn,
                 CreatorUserId = userId
             };
-            var menuItemListTwo = new List<MenuItemDto>();
             if (!inputMenuModel.MenuItems.IsNullOrEmpty())
             {
-                foreach (var menuItemTwo in inputMenuModel.MenuItems.Select(i => ToMenuItemDto(userId, i))) //第二层
-                {
-                    if (!menuItemTwo.MenuItems.IsNullOrEmpty())
-                    {
-                        menuItemTwo.MenuItems = menuItemTwo.MenuItems.Select(i => new MenuItemDto //第三层
-                        {
-                            Name = i.Name,
-                            Url = i.Url,
-                            CustomData = i.CustomData,
-                            Icon = i.Icon,
-                            ClassName = i.ClassName,
-                            OrderIn = i.OrderIn,
-                            RequiredPermissionName = i.RequiredPermissionName,
-                            RequiresAuthentication = i.RequiresAuthentication,
-                            CreatorUserId = userId
-                        }).ToList();
-                        menuItemListTwo.Add(menuItemTwo);
-                    }
-                }
-
-                #region 冗余代码
-
-                //    var menuDto = new MenuDto
-                //{
-                //    Name = inputMenuModel.Name,
-                //    Url = inputMenuModel.Url,
-                //    CustomData = inputMenuModel.CustomData,
-                //    Icon = inputMenuModel.Icon,
-                //    ClassName = inputMenuModel.ClassName,
-                //    OrderIn = inputMenuModel.OrderIn,
-                //    MenuItems = inputMenuModel.MenuItems.Select(i => new MenuItemDto
-                //    {
-                //        Name = i.Name,
-                //        Url = i.Url,
-                //        CustomData = i.CustomData,
-                //        Icon = i.Icon,
-                //        ClassName = i.ClassName,
-                //        OrderIn = i.OrderIn,
-                //        RequiredPermissionName = i.RequiredPermissionName,
-                //        RequiresAuthentication = i.RequiresAuthentication,
-                //        MenuItems = inputMenuModel.MenuItems.Select(s=>s.MenuItems.Select(sss=>))
-                //    }).ToList(),
-                //    //CreatorUserId = userId
-                //}; 
-
-                #endregion
+                menuDto.MenuItems = inputMenuModel.MenuItems.Select(i => ToMenuItemDto(userId, i)).ToList();
             }
-            menuDto.MenuItems = menuItemListTwo;
             var id = await _menuService.InsertAndGetIdAsync(menuDto);
             return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", id);
         }
