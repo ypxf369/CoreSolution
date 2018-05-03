@@ -59,13 +59,13 @@ namespace CoreSolution.Service
             var userPermissionList = await _dbContext.Permissions
                 .Where(i => roleIds.Contains(i.RoleId))
                 .Select(i => i.Name).ToListAsync();
-            var menus = await GetAllIncluding().ProjectTo<MenuDto>().ToListAsync();
+            var menus = await GetAllIncluding().OrderBy(i => i.OrderIn).ProjectTo<MenuDto>().ToListAsync();
             foreach (var menu in menus)//第一层
             {
                 if (!menu.MenuItems.IsNullOrEmpty())
                 {
                     var menuItemsTwo = new List<MenuItemDto>();
-                    menuItemsTwo.AddRange(menu.MenuItems);
+                    menuItemsTwo.AddRange(menu.MenuItems.OrderBy(i => i.OrderIn));
                     foreach (var menuItem in menu.MenuItems)//第二层
                     {
                         if (menuItem.RequiresAuthentication &&
@@ -80,7 +80,7 @@ namespace CoreSolution.Service
                             if (!menuItem.MenuItems.IsNullOrEmpty())
                             {
                                 var menuItemsThree = new List<MenuItemDto>();
-                                menuItemsThree.AddRange(menuItem.MenuItems);
+                                menuItemsThree.AddRange(menuItem.MenuItems.OrderBy(i => i.OrderIn));
                                 foreach (var mi in menuItem.MenuItems)//第三层
                                 {
                                     if (mi.RequiresAuthentication &&
@@ -95,7 +95,7 @@ namespace CoreSolution.Service
                                         if (!mi.MenuItems.IsNullOrEmpty())
                                         {
                                             var menuItemsFour = new List<MenuItemDto>();
-                                            menuItemsFour.AddRange(mi.MenuItems);
+                                            menuItemsFour.AddRange(mi.MenuItems.OrderBy(i => i.OrderIn));
                                             foreach (var m in mi.MenuItems)//第四层
                                             {
                                                 if (m.RequiresAuthentication &&
