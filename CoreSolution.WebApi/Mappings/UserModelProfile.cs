@@ -13,7 +13,8 @@ namespace CoreSolution.WebApi.Mappings
     {
         public UserModelProfile()
         {
-            CreateMap<UserDto, OutputUserModel>();
+            CreateMap<UserDto, OutputUserModel>()
+                .ForMember(i => i.RoleName, i => i.MapFrom(m => m.UserRoles.Select(s => s.Role.Name).ToArray()));
         }
     }
 }

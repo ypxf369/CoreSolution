@@ -195,10 +195,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 var entity = _dbContext.Find<TEntity>(entityDto.Id);
                 if (entity != null)
                 {
+                    var inputEntity = Mapper.Map<TEntity>(entityDto);//
                     var entityType = entity.GetType();
-                    var dtoType = entityDto.GetType();
+                    //var dtoType = entityDto.GetType();
+                    var inputType = inputEntity.GetType();//
                     var entityProperties = entityType.GetProperties();
-                    var dtoProperties = dtoType.GetProperties().ToList();
+                    var inputProperties = inputType.GetProperties().ToList();
                     foreach (var ePro in entityProperties)
                     {
                         string eName = ePro.Name;
@@ -212,21 +214,22 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                                 ePro.SetValue(entity, DateTime.Now);
                                 continue;
                         }
-                        foreach (var dPro in dtoProperties)
+                        foreach (var iPro in inputProperties)
                         {
-                            if (eName == dPro.Name)
+                            if (eName == iPro.Name)
                             {
-                                var value = dPro.GetValue(entityDto);
-                                var dType = dPro.PropertyType;
-                                if (dType == typeof(int) || dType == typeof(long) || dType == typeof(Guid))
+                                //var value = dPro.GetValue(entityDto);
+                                var ivalue = iPro.GetValue(inputEntity);//
+                                var iType = iPro.PropertyType;
+                                if (iType == typeof(int) || iType == typeof(long) || iType == typeof(Guid))
                                 {
                                     object[] obj = { 0, new Guid() };
-                                    if (obj.Contains(value)) break;
+                                    if (obj.Contains(ivalue)) break;
                                 }
-                                if (value != null && ePro.GetValue(entity) != value)
+                                if (ivalue != null && ePro.GetValue(entity) != ivalue)
                                 {
-                                    ePro.SetValue(entity, value);
-                                    dtoProperties.Remove(dPro);
+                                    ePro.SetValue(entity, ivalue);
+                                    inputProperties.Remove(iPro);
                                     break;
                                 }
                             }
@@ -246,10 +249,12 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                 var entity = await _dbContext.FindAsync<TEntity>(entityDto.Id);
                 if (entity != null)
                 {
+                    var inputEntity = Mapper.Map<TEntity>(entityDto);//
                     var entityType = entity.GetType();
-                    var dtoType = entityDto.GetType();
+                    //var dtoType = entityDto.GetType();
+                    var inputType = inputEntity.GetType();//
                     var entityProperties = entityType.GetProperties();
-                    var dtoProperties = dtoType.GetProperties().ToList();
+                    var inputProperties = inputType.GetProperties().ToList();
                     foreach (var ePro in entityProperties)
                     {
                         string eName = ePro.Name;
@@ -263,21 +268,22 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                                 ePro.SetValue(entity, DateTime.Now);
                                 continue;
                         }
-                        foreach (var dPro in dtoProperties)
+                        foreach (var iPro in inputProperties)
                         {
-                            if (eName == dPro.Name)
+                            if (eName == iPro.Name)
                             {
-                                var value = dPro.GetValue(entityDto);
-                                var dType = dPro.PropertyType;
-                                if (dType == typeof(int) || dType == typeof(long) || dType == typeof(Guid))
+                                //var value = dPro.GetValue(entityDto);
+                                var ivalue = iPro.GetValue(inputEntity);//
+                                var iType = iPro.PropertyType;
+                                if (iType == typeof(int) || iType == typeof(long) || iType == typeof(Guid))
                                 {
                                     object[] obj = { 0, new Guid() };
-                                    if (obj.Contains(value)) break;
+                                    if (obj.Contains(ivalue)) break;
                                 }
-                                if (value != null && ePro.GetValue(entity) != value)
+                                if (ivalue != null && ePro.GetValue(entity) != ivalue)
                                 {
-                                    ePro.SetValue(entity, value);
-                                    dtoProperties.Remove(dPro);
+                                    ePro.SetValue(entity, ivalue);
+                                    inputProperties.Remove(iPro);
                                     break;
                                 }
                             }

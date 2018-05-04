@@ -254,5 +254,41 @@ namespace CoreSolution.WebApi.Controllers
             return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", result);
         }
 
+        /// <summary>
+        /// 更新用户信息。400用户名不能为空，200成功
+        /// </summary>
+        /// <param name="inputUserModel">用户参数model</param>
+        /// <returns></returns>
+        [Route("updateUserInfo")]
+        [HttpPost]
+        public async Task<JsonResult> UpdateUserInfo([FromBody] InputUserModel inputUserModel)
+        {
+            if (inputUserModel.UserName.IsNullOrWhiteSpace())
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "用户名不能为空");
+            }
+            var userDto = new UserDto
+            {
+                Id = inputUserModel.UserId,
+                UserName = inputUserModel.UserName,
+                RealName = inputUserModel.RealName
+            };
+            if (!inputUserModel.Roles.IsNullOrEmpty())
+            {
+                var user = await _userService.GetAsync(inputUserModel.UserId);
+                var userRoleIds = user.UserRoles.Select(i => i.RoleId).ToList();
+                var userRoleDtos = new List<UserRoleDto>();
+                foreach (var roleId in inputUserModel.Roles)
+                {
+                    if (!userRoleIds.Contains(roleId))
+                    {
+                        userRoleDtos.Add(new UserRoleDto { UserId = inputUserModel.UserId, RoleId = roleId });
+                    }
+                }
+                userDto.UserRoles = userRoleDtos;
+            }
+            await _userService.UpdateAsync(userDto);
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功");
+        }
     }
 }
