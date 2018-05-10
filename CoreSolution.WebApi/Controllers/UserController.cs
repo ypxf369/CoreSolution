@@ -255,7 +255,7 @@ namespace CoreSolution.WebApi.Controllers
         }
 
         /// <summary>
-        /// 更新用户信息。400用户名不能为空，200成功
+        /// 更新用户信息。400 用户Id不能为空,用户名不能为空，200成功
         /// </summary>
         /// <param name="inputUserModel">用户参数model</param>
         /// <returns></returns>
@@ -263,6 +263,10 @@ namespace CoreSolution.WebApi.Controllers
         [HttpPost]
         public async Task<JsonResult> UpdateUserInfo([FromBody] InputUserModel inputUserModel)
         {
+            if (inputUserModel.UserId <= 0)
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "用户Id不能为空");
+            }
             if (inputUserModel.UserName.IsNullOrWhiteSpace())
             {
                 return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "用户名不能为空");

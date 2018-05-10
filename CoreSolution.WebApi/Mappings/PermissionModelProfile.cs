@@ -13,7 +13,8 @@ namespace CoreSolution.WebApi.Mappings
     {
         public PermissionModelProfile()
         {
-            CreateMap<PermissionDto, OutputPermissionModel>();
+            CreateMap<PermissionDto, OutputPermissionModel>()
+                .ForMember(i => i.RoleName, i => i.MapFrom(m => m.Role != null ? m.Role.Name : null));
         }
     }
 }

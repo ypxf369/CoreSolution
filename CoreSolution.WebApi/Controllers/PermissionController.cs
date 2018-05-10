@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using CoreSolution.Domain.Entities;
 using CoreSolution.Dto;
 using CoreSolution.IService;
 using CoreSolution.Tools.Extensions;
@@ -129,6 +130,59 @@ namespace CoreSolution.WebApi.Controllers
         {
             var result = await _permissionService.GetAllListAsync();
             return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputPermissionModel> { Total = result.Count, List = Mapper.Map<IList<OutputPermissionModel>>(result) });
+        }
+
+        /// <summary>
+        /// 分页获取权限列表。200获取成功
+        /// </summary>
+        /// <returns></returns>
+        [Route("getPermissionsPaged")]
+        [HttpGet]
+        public async Task<JsonResult> GetPermissionsPaged(string key, int pageIndex = 1, int pageSize = 10)
+        {
+            var where = ExpressionExtensions.True<Permission>();
+            if (!key.IsNullOrWhiteSpace())
+            {
+                where = where.And(i => i.Name.Contains(key));
+            }
+            var result = await _permissionService.GetPagedAsync(where, i => i.CreationTime, pageIndex, pageSize);
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputPermissionModel> { Total = result.Item1, List = Mapper.Map<IList<OutputPermissionModel>>(result.Item2) });
+        }
+
+        /// <summary>
+        /// 更新权限信息。400 权限Id不能为空，权限名不能为空，200成功
+        /// </summary>
+        /// <param name="inputPermissionModel">权限参数model</param>
+        /// <returns></returns>
+        [Route("updatePermissionInfo")]
+        [HttpPost]
+        public async Task<JsonResult> UpdatePermissionInfo([FromBody] InputPermissionModel inputPermissionModel)
+        {
+            if (inputPermissionModel.PermissionId == null || inputPermissionModel.PermissionId.Value <= 0)
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "权限Id不能为空");
+            }
+            if (inputPermissionModel.Name.IsNullOrWhiteSpace())
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "权限名不能为空");
+            }
+            var permissionDto = new PermissionDto
+            {
+                Id = inputPermissionModel.PermissionId.GetValueOrDefault(),
+                Name = inputPermissionModel.Name,
+                Description = inputPermissionModel.Description,
+            };
+            if (inputPermissionModel.RoleId > 0)
+            {
+                var permission = await _permissionService.GetAsync(inputPermissionModel.PermissionId.Value);
+                var roleId = permission?.RoleId;
+                if (roleId != null && roleId != inputPermissionModel.RoleId)
+                {
+                    permissionDto.RoleId = inputPermissionModel.RoleId;
+                }
+            }
+            await _permissionService.UpdateAsync(permissionDto);
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功");
         }
     }
 }

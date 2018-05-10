@@ -134,5 +134,33 @@ namespace CoreSolution.WebApi.Controllers
             var result = await _roleService.GetAllListAsync();
             return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功", new ListModel<OutputRoleModel> { Total = result.Count, List = Mapper.Map<IList<OutputRoleModel>>(result) });
         }
+
+        /// <summary>
+        /// 更新角色信息。400 角色Id不能为空,角色名不能为空，200成功
+        /// </summary>
+        /// <param name="inputRoleModel">角色参数model</param>
+        /// <returns></returns>
+        [Route("updateRoleInfo")]
+        [HttpPost]
+        public async Task<JsonResult> UpdateRoleInfo([FromBody] InputRoleModel inputRoleModel)
+        {
+            if (inputRoleModel.RoleId == null || inputRoleModel.RoleId.Value <= 0)
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "角色Id不能为空");
+            }
+            if (inputRoleModel.Name.IsNullOrWhiteSpace())
+            {
+                return AjaxHelper.JsonResult(HttpStatusCode.BadRequest, "角色名不能为空");
+            }
+            var roleDto = new RoleDto
+            {
+                Id = inputRoleModel.RoleId.Value,
+                Name = inputRoleModel.Name,
+                Description = inputRoleModel.Description,
+            };
+            await _roleService.UpdateAsync(roleDto);
+            return AjaxHelper.JsonResult(HttpStatusCode.OK, "成功");
+        }
     }
+}
 }

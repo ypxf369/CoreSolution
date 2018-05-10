@@ -12,6 +12,10 @@ namespace CoreSolution.WebApi.Models.Role
     public class InputRoleModel
     {
         /// <summary>
+        /// 角色Id，新增是不用传，修改时必传
+        /// </summary>
+        public int? RoleId { get; set; }
+        /// <summary>
         /// 角色名称
         /// </summary>
         public string Name { get; set; }

@@ -11,6 +11,10 @@ namespace CoreSolution.WebApi.Models.Permission
     public class InputPermissionModel
     {
         /// <summary>
+        /// 权限Id，新增是不用传，修改时必传
+        /// </summary>
+        public int? PermissionId { get; set; }
+        /// <summary>
         /// 角色名称
         /// </summary>
         public string Name { get; set; }
