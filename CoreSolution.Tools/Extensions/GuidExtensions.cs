@@ -8,7 +8,7 @@ namespace CoreSolution.Tools.Extensions
     {
         public static bool IsNullOrEmpty(this Guid guid)
         {
-            return guid == new Guid();
+            return guid == Guid.Empty;
         }
     }
 }
