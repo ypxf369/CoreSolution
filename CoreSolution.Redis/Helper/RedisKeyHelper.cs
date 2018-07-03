@@ -82,6 +82,24 @@ namespace CoreSolution.Redis.Helper
             return Do(db => db.KeyExists(key));
         }
 
+        public static T GetOrSet<T>(string key, Func<T> setFunc, TimeSpan? expiry = default(TimeSpan?))
+        {
+            var result = Do(db => ConvertObj<T>(db.StringGet(key)));
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                var value = setFunc();
+                if (value != null)
+                {
+                    Do(db => db.StringSet(key, ConvertJson(value), expiry));
+                }
+                return value;
+            }
+        }
+
         #endregion
 
         #region 异步方法
@@ -91,7 +109,7 @@ namespace CoreSolution.Redis.Helper
         }
         public static async Task<bool> KeyExpireAsync(string key, DateTime? expiry = default(DateTime?))
         {
-            return await Do(db => db.KeyExpireAsync(key,expiry));
+            return await Do(db => db.KeyExpireAsync(key, expiry));
         }
 
         public static async Task<bool> StringSetAsync(string key, string value, TimeSpan? expiry = default(TimeSpan?))
@@ -140,6 +158,24 @@ namespace CoreSolution.Redis.Helper
         public static async Task<long> StringAppendAsync(string key, string value)
         {
             return await Do(db => db.StringAppendAsync(key, value));
+        }
+
+        public static async Task<T> GetOrSetAsync<T>(string key, Func<Task<T>> setFunc, TimeSpan? expiry = default(TimeSpan?))
+        {
+            var result = await Do(async db => ConvertObj<T>(await db.StringGetAsync(key)));
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                var value = await setFunc();
+                if (value != null)
+                {
+                    await Do(db => db.StringSetAsync(key, ConvertJson(value), expiry));
+                }
+                return value;
+            }
         }
 
         #endregion
