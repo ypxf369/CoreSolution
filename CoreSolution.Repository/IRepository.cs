@@ -82,30 +82,23 @@ namespace CoreSolution.Repository
         Task<Tuple<int, List<TEntityDto>>> GetPagedAsync<TProperty>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TProperty>> orderBy, int pageIndex, int pageSize, bool isDesc = false);
 
         /// <summary>
-        /// Sql分页方法
+        /// 执行Sql查询
         /// </summary>
-        /// <param name="totalCount">总数据条数</param>
-        /// <param name="sql">分页Sql</param>
-        /// <param name="orderBy">排序规则</param>
-        /// <param name="pageIndex">当前页码</param>
-        /// <param name="pageSize">每页数据条数</param>
-        /// <param name="parameters">参数数组</param>
+        /// <param name="sql">查询sql</param>
+        /// <param name="parameters">参数</param>
         /// <returns></returns>
-        List<TEntityDto> GetPaged(out int totalCount, string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+        List<TEntityDto> GetFromSql(string sql, params object[] parameters);
 
         /// <summary>
-        /// Sql分页方法
+        /// 执行Sql查询
         /// </summary>
-        /// <param name="sql">分页Sql</param>
-        /// <param name="orderBy">排序规则</param>
-        /// <param name="pageIndex">当前页码</param>
-        /// <param name="pageSize">每页数据条数</param>
-        /// <param name="parameters">参数数组</param>
+        /// <param name="sql">查询sql</param>
+        /// <param name="parameters">参数</param>
         /// <returns></returns>
-        Task<Tuple<int, List<TEntityDto>>> GetPagedAsync(string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+        Task<List<TEntityDto>> GetFromSqlAsync(string sql, params object[] parameters);
 
         /// <summary>
-        /// 执行原始Sql查询
+        /// 执行原始Sql,返回受影响的行数
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="parameters">参数</param>
@@ -113,7 +106,7 @@ namespace CoreSolution.Repository
         int ExecuteSql(string sql, params object[] parameters);
 
         /// <summary>
-        /// 执行原始Sql查询
+        /// 执行原始Sql,返回受影响的行数
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="parameters">参数</param>

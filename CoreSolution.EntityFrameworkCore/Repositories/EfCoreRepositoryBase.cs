@@ -63,40 +63,14 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
             return entity;
         }
 
-        public override List<TEntityDto> GetPaged(out int totalCount, string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters)
+        public override List<TEntityDto> GetFromSql(string sql, params object[] parameters)
         {
-            var totalSql = string.Format("select count(1) from ({0}) total", sql);
-            totalCount = ExecuteSql(totalSql, parameters);
-
-            string sqlBuilder = @"select top " + pageSize + " *   "
-                                + "from "
-                                + "("
-                                + "select row_number() over (order by " + orderBy + " ) as RowNumber,* from"
-                                + "("
-                                + sql
-                                + " ) T1 "
-                                + ") T2 "
-                                + "where RowNumber > " + pageSize + "*(" + (pageIndex - 1) + ") ";
-            return GetAll().FromSql(sqlBuilder, parameters).ProjectTo<TEntityDto>().ToList();
+            return GetAll().FromSql(sql, parameters).ProjectTo<TEntityDto>().ToList();
         }
 
-        public override async Task<Tuple<int, List<TEntityDto>>> GetPagedAsync(string sql, string orderBy, int pageIndex,
-            int pageSize, params object[] parameters)
+        public override async Task<List<TEntityDto>> GetFromSqlAsync(string sql, params object[] parameters)
         {
-            var totalSql = string.Format("select count(1) from ({0}) total", sql);
-            int totalCount = await ExecuteSqlAsync(totalSql, parameters);
-
-            string sqlBuilder = @"select top " + pageSize + " *   "
-                                + "from "
-                                + "("
-                                + "select row_number() over (order by " + orderBy + " ) as RowNumber,* from"
-                                + "("
-                                + sql
-                                + " ) T1 "
-                                + ") T2 "
-                                + "where RowNumber > " + pageSize + "*(" + (pageIndex - 1) + ") ";
-            var data = await GetAll().FromSql(sqlBuilder, parameters).ProjectTo<TEntityDto>().ToListAsync();
-            return new Tuple<int, List<TEntityDto>>(totalCount, data);
+            return await GetAll().FromSql(sql, parameters).ProjectTo<TEntityDto>().ToListAsync();
         }
 
         public override int ExecuteSql(string sql, params object[] parameters)

@@ -5,18 +5,15 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
-using CoreSolution.AutoMapper.Extensions;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto;
 using CoreSolution.IService;
 using CoreSolution.Tools.Extensions;
 using CoreSolution.Tools.WebResult;
-using CoreSolution.WebApi.Interceptor;
 using CoreSolution.WebApi.Manager;
 using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.User;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreSolution.WebApi.Controllers
@@ -26,7 +23,7 @@ namespace CoreSolution.WebApi.Controllers
     /// </summary>
     [EnableCors("AllowAllOrigin")]
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private static string LoginErrorTimes_Prefix = "LoginErrorTimes.User.";
@@ -41,7 +38,7 @@ namespace CoreSolution.WebApi.Controllers
             _permissionService = permissionService;
             _roleService = roleService;
         }
-
+    
         /// <summary>
         /// 用户注册。200注册成功，400用户名、密码不能为空，302用户名已存在。
         /// </summary>

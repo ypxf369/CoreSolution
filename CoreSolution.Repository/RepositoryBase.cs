@@ -18,7 +18,6 @@ namespace CoreSolution.Repository
     {
         public object DbContext { get; set; }
 
-
         public abstract IQueryable<TEntity> GetAll();
 
         public virtual List<TEntityDto> GetAllList()
@@ -67,9 +66,9 @@ namespace CoreSolution.Repository
             return new Tuple<int, List<TEntityDto>>(totalCount, data);
         }
 
-        public abstract List<TEntityDto> GetPaged(out int totalCount, string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+        public abstract List<TEntityDto> GetFromSql(string sql, params object[] parameters);
 
-        public abstract Task<Tuple<int, List<TEntityDto>>> GetPagedAsync(string sql, string orderBy, int pageIndex, int pageSize, params object[] parameters);
+        public abstract Task<List<TEntityDto>> GetFromSqlAsync(string sql, params object[] parameters);
 
         public abstract int ExecuteSql(string sql, params object[] parameters);
 

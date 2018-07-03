@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,7 +13,6 @@ using CoreSolution.WebApi.Manager;
 using CoreSolution.WebApi.Models;
 using CoreSolution.WebApi.Models.Permission;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreSolution.WebApi.Controllers
@@ -24,7 +22,7 @@ namespace CoreSolution.WebApi.Controllers
     /// </summary>
     [EnableCors("AllowAllOrigin")]
     [Produces("application/json")]
-    [Route("api/Permission")]
+    [Route("api/[controller]")]
     [CheckAuthorize("Admin")]
     public class PermissionController : Controller
     {
