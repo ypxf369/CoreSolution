@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/iview/iview.css">
+    <style>
+        .layout {
+            *border: 1px solid #d7dde4;
+            background: #f5f7f9;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .layout-breadcrumb {
+            padding: 10px 15px 0;
+        }
+
+        .layout-content {
+            min-height: 200px;
+            margin: 15px;
+            overflow: hidden;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .layout-content-main {
+            padding: 10px;
+        }
+
+        .layout-copy {
+            text-align: center;
+            padding: 10px 0 20px;
+            color: #9ea7b4;
+        }
+
+        .layout-menu-left {
+            background: #464c5b;
+        }
+
+        .layout-header {
+            height: 50px;
+            background: #fff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+        }
+
+        .layout-logo-left {
+            width: 90%;
+            height: 30px;
+            background: #5b6270;
+            border-radius: 3px;
+            margin: 15px auto;
+        }
+
+        .layout-ceiling-main a {
+            color: #9ba7b5;
+        }
+
+        .layout-hide-text .layout-text {
+            display: none;
+        }
+
+        .ivu-col {
+            transition: width .2s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="appLayout" v-cloak>
+        <span>{{test}}</span>
+        <div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
+            <row type="flex">
+                <i-col :span="spanLeft" class="layout-menu-left">
+                    <i-menu :theme="theme" :accordion="true" width="auto" v-on:on -select="onSelect" open-names="['1']">
+                        <div class="layout-logo-left"></div>
+                        <Submenu name="1">
+                            <template slot="title">
+                                <Icon type="ios-paper" :size="iconSize"></Icon>
+                                <span class="layout-text">内容管理</span>
+                            </template>
+                            <Menu-Item name="文章管理">文章管理</Menu-Item>
+                            <Menu-Item name="评论管理">评论管理</Menu-Item>
+                            <Submenu name="4">
+                                <template slot="title">
+                                    举报管理
+                                </template>
+                                <Menu-Item name="Option 7">Option 7</Menu-Item>
+                                <Menu-Item name="Option 8">Option 8</Menu-Item>
+                            </Submenu>
+                        </Submenu>
+                        <Submenu name="2">
+                            <template slot="title">
+                                <Icon type="ios-people" :size="iconSize"></Icon>
+                                <span class="layout-text">用户管理</span>
+                            </template>
+                            <Menu-Item name="新增用户">新增用户</Menu-Item>
+                            <Menu-Item name="新增用户">活跃用户</Menu-Item>
+                        </Submenu>
+                        <Submenu name="3">
+                            <template slot="title">
+                                <Icon type="stats-bars" :size="iconSize"></Icon>
+                                <span class="layout-text">统计分析</span>
+                            </template>
+                            <Menu-Group title="使用">
+                                <Menu-Item name="新增和启动">新增和启动</Menu-Item>
+                                <Menu-Item name="活跃分析">活跃分析</Menu-Item>
+                                <Menu-Item name="时段分析">时段分析</Menu-Item>
+                            </Menu-Group>
+                            <Menu-Group title="留存">
+                                <Menu-Item name="用户留存">用户留存</Menu-Item>
+                                <Menu-Item name="流失用户">流失用户</Menu-Item>
+                            </Menu-Group>
+                        </Submenu>
+                    </i-menu>
+                </i-col>
+                <i-col :span="spanRight">
+                    <div class="layout-header">
+                        <i-button type="text" v-on:click="toggleClick">
+                            <Icon type="navicon" size="32"></Icon>
+                        </i-button>
+                    </div>
+                    <div class="layout-breadcrumb">
+                        <Breadcrumb>
+                            <Breadcrumb-item href="#">首页</Breadcrumb-item>
+                            <Breadcrumb-item href="#">应用中心</Breadcrumb-item>
+                            <Breadcrumb-item href="#">{{breadcrumb}}</Breadcrumb-item>
+                        </Breadcrumb>
+                    </div>
+                    <div class="layout-content">
+                        <div class="layout-content-main" :style="contentStyle">
+                            @RenderBody()
+                        </div>
+                    </div>
+                    <div class="layout-copy">
+                        2017-2018 &copy; 027wh
+                    </div>
+                </i-col>
+            </row>
+            <br>
+            <p>Change theme</p>
+            <Radio-Group v-model="theme">
+                <Radio label="light"></Radio>
+                <Radio label="dark"></Radio>
+            </Radio-Group>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/lib/vue/vue.min.js"></script>
+    <script type="text/javascript" src="~/lib/iview/iview.min.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el: "#appLayout",
+            data: {
+                test: "asdfsdfsdfsdf",
+                spanLeft: 5,
+                spanRight: 19,
+                theme: 'dark',
+                shrink: true,
+                breadcrumb: ""
+            },
+            computed: {
+                iconSize: function () {
+                    return this.spanLeft === 5 ? 14 : 24;
+                },
+                contentStyle: function () {
+                    var innerHeight = window.innerHeight;
+                    var contentHeight = innerHeight - 50 - 110;
+                    return "min-height: " + contentHeight + "px";
+                }
+            },
+            methods: {
+                toggleClick() {
+                    if (this.spanLeft === 5) {
+                        this.spanLeft = 2;
+                        this.spanRight = 22;
+                    } else {
+                        this.spanLeft = 5;
+                        this.spanRight = 19;
+                    }
+                },
+                onSelect(name) {
+                    var vm = this;
+                    vm.breadcrumb = name;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
