@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/iview/iview.css">
+    <link href="~/lib/iview/dist/styles/iview.css" rel="stylesheet" />
     <style>
         .layout {
             *border: 1px solid #d7dde4;
@@ -72,11 +72,10 @@
 
 <body>
     <div id="appLayout" v-cloak>
-        <span>{{test}}</span>
         <div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
             <row type="flex">
                 <i-col :span="spanLeft" class="layout-menu-left">
-                    <i-menu :theme="theme" :accordion="true" width="auto" v-on:on -select="onSelect" open-names="['1']">
+                    <i-menu :theme="theme" :accordion="true" width="auto" v-on:on-select="onSelect" open-names="['1']">
                         <div class="layout-logo-left"></div>
                         <Submenu name="1">
                             <template slot="title">
@@ -141,26 +140,25 @@
                     </div>
                 </i-col>
             </row>
-            <br>
-            <p>Change theme</p>
-            <Radio-Group v-model="theme">
-                <Radio label="light"></Radio>
-                <Radio label="dark"></Radio>
-            </Radio-Group>
+            @*<br>
+                <p>Change theme</p>
+                <Radio-Group v-model="theme">
+                    <Radio label="light"></Radio>
+                    <Radio label="dark"></Radio>
+                </Radio-Group>*@
         </div>
     </div>
-    <script type="text/javascript" src="~/lib/vue/vue.min.js"></script>
-    <script type="text/javascript" src="~/lib/iview/iview.min.js"></script>
-    <script type="text/javascript">
-        new Vue({
-            el: "#appLayout",
+    <script src="~/lib/vue/vue.min.js"></script>
+    <script src="~/lib/iview/dist/iview.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#appLayout',
             data: {
-                test: "asdfsdfsdfsdf",
                 spanLeft: 5,
                 spanRight: 19,
                 theme: 'dark',
                 shrink: true,
-                breadcrumb: ""
+                breadcrumb: ''
             },
             computed: {
                 iconSize: function () {
@@ -187,8 +185,8 @@
                     vm.breadcrumb = name;
                 }
             }
-        })
+        });
     </script>
+    @RenderSection("scripts", false)
 </body>
-
 </html>

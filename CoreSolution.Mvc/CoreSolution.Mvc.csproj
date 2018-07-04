@@ -10,9 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Areas\Admin\Views\Shared\_CookieConsentPartial.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Areas\Admin\Views\Shared\_Layout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -25,9 +22,17 @@
     <Content Update="Areas\Admin\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\Front\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Front\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Front\Models\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />

@@ -51,8 +51,14 @@ namespace CoreSolution.Mvc
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "areaAdminRoute",
-                    template: "{area:exists}/{controller}/{action=Index}/{id?}");
+                    name: "areasFront",
+                    template: "{area:exists}/{controller}/{action=Index}/{id?}"
+                );
+
+                routes.MapRoute(
+                    name: "areaAdmin",
+                    template: "{area:exists}/{controller}/{action=Index}/{id?}"
+                    );
 
                 routes.MapRoute(
                     name: "default",
