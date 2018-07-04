@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CoreSolution.Domain.Entities;
+using CoreSolution.Domain.Enum;
+using CoreSolution.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreSolution.EntityFrameworkCore
@@ -18,7 +20,8 @@ namespace CoreSolution.EntityFrameworkCore
         {
             if (!optionsBuilder.IsConfigured)
             {
-                DbContextConfigurer.Configure(optionsBuilder);
+                optionsBuilder.UseSqlServer(DbConnectionFactory.CreateDbConnection(DatabaseType.SqlServer));
+                //optionsBuilder.UseLazyLoadingProxies();//启用EFCore的延迟加载(建议不启用，显式Includ)
             }
         }
 

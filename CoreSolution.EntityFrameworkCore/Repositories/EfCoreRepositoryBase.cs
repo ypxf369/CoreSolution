@@ -18,13 +18,11 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
         where TEntity : class, IEntity<TPrimaryKey>
         where TEntityDto : class, IEntityDto<TPrimaryKey>
     {
-
-        public readonly EfCoreDbContext _dbContext;
+        protected readonly EfCoreDbContext _dbContext;
 
         protected EfCoreRepositoryBase()
         {
-            DbContext = new EfCoreDbContext();
-            _dbContext = (EfCoreDbContext)DbContext;
+            _dbContext = new EfCoreDbContext();
         }
 
         public override IQueryable<TEntity> GetAll()

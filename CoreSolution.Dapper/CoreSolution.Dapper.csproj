@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dapper" Version="1.50.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreSolution.Repository\CoreSolution.Repository.csproj" />
+    <ProjectReference Include="..\CoreSolution.Tools\CoreSolution.Tools.csproj" />
+  </ItemGroup>
+
+</Project>

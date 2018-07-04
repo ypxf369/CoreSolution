@@ -5,21 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="configuration.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.0" />
     <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="2.1.0" />
     <PackageReference Include="microsoft.entityframeworkcore.tools" Version="2.1.0" />
-    <PackageReference Include="microsoft.extensions.configuration.json" Version="2.1.0" />
     <PackageReference Include="microsoft.extensions.options.configurationextensions" Version="2.1.0" />
   </ItemGroup>
 

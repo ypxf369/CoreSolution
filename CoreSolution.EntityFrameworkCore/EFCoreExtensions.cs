@@ -38,8 +38,8 @@ namespace CoreSolution.EntityFrameworkCore
                 Type typeEntity = type.GetInterfaces().First(IsIEntityTypeConfigurationType).GenericTypeArguments[0];
 
                 //因为ApplyConfiguration是泛型方法，所以要通过MakeGenericMethod转换为泛型方法才能调用
-                MethodInfo methodApplyConfiguration = methodNonGenericApplyConfiguration.MakeGenericMethod(typeEntity);
-                methodApplyConfiguration.Invoke(modelBuilder, new[] { entityTypeConfig });
+                MethodInfo methodApplyConfiguration = methodNonGenericApplyConfiguration?.MakeGenericMethod(typeEntity);
+                methodApplyConfiguration?.Invoke(modelBuilder, new[] { entityTypeConfig });
             }
         }
     }

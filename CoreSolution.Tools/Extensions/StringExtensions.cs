@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using PluralizationService;
 
 namespace CoreSolution.Tools.Extensions
 {
@@ -172,6 +173,28 @@ namespace CoreSolution.Tools.Extensions
                 return false;
             }
             return Regex.IsMatch(str.Trim(), @"^[+-]?/d*[.]?/d*$");
+        }
+
+        /// <summary>
+        /// 将单词转换为复数形式
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public static string ToPluralize(this string str)
+        {
+            var builder = new PluralizationApiBuilder().Build();
+            return builder.Pluralize(str, new CultureInfo("en-US"));
+        }
+
+        /// <summary>
+        /// 将单词转换为单数形式
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public static string ToSingularize(this string str)
+        {
+            var builder = new PluralizationApiBuilder().Build();
+            return builder.Singularize(str, new CultureInfo("en-US"));
         }
     }
 }
