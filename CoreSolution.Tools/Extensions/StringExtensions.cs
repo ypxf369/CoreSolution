@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using PluralizationService;
+using PluralizationService.English;
 
 namespace CoreSolution.Tools.Extensions
 {
@@ -182,8 +183,9 @@ namespace CoreSolution.Tools.Extensions
         /// <returns></returns>
         public static string ToPluralize(this string str)
         {
-            var builder = new PluralizationApiBuilder().Build();
-            return builder.Pluralize(str, new CultureInfo("en-US"));
+            var builder = new PluralizationApiBuilder();
+            builder.AddEnglishProvider();
+            return builder.Build().Pluralize(str, new CultureInfo("en-US"));
         }
 
         /// <summary>
@@ -193,8 +195,9 @@ namespace CoreSolution.Tools.Extensions
         /// <returns></returns>
         public static string ToSingularize(this string str)
         {
-            var builder = new PluralizationApiBuilder().Build();
-            return builder.Singularize(str, new CultureInfo("en-US"));
+            var builder = new PluralizationApiBuilder();
+            builder.AddEnglishProvider();
+            return builder.Build().Singularize(str, new CultureInfo("en-US"));
         }
     }
 }

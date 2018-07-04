@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using CoreSolution.Domain.Entities.Base;
 using CoreSolution.Domain.Enum;
 using CoreSolution.Dto.Base;
@@ -20,7 +21,7 @@ namespace CoreSolution.Dapper.Repositories
     {
         protected readonly IDbConnection _dbConnection;
 
-        private readonly string _tableName = $"T_{nameof(TEntity).ToPluralize()}";
+        private readonly string _tableName = $"{typeof(TEntity).Name.ToPluralize()}";
 
         protected DapperRepositoryBase()
         {
@@ -34,8 +35,9 @@ namespace CoreSolution.Dapper.Repositories
 
         public override List<TEntityDto> GetAllList()
         {
-            string sql = $"SELECT * FROM {_dbConnection.Database}..{_tableName}";
-            return _dbConnection.Query<TEntityDto>(sql).ToList();
+            string sql = $"SELECT * FROM {_dbConnection.Database}..{_tableName} WITH (NOLOCK)";
+            var entity = _dbConnection.Query<TEntity>(sql);
+            return Mapper.Map<List<TEntityDto>>(entity);
         }
     }
 }

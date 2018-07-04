@@ -15,15 +15,6 @@ namespace CoreSolution.Service
 {
     public sealed class AuditLogService : EfCoreRepositoryBase<AuditLog, AuditLogDto, int>, IAuditLogService
     {
-        public override async Task<AuditLogDto> InsertAsync(AuditLogDto entityDto)
-        {
-            if (entityDto != null)
-            {
-                await _dbContext.AuditLogs.AddAsync(Mapper.Map<AuditLog>(entityDto));
-                await _dbContext.SaveChangesAsync();
-            }
-            return entityDto;
-        }
-
+        
     }
 }
