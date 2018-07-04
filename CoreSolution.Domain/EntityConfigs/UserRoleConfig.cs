@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CoreSolution.Domain.Entities;
+using CoreSolution.Tools.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,7 +12,7 @@ namespace CoreSolution.Domain.EntityConfigs
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.ToTable("T_UserRoles").HasQueryFilter(i => !i.IsDeleted);
+            builder.ToTable(nameof(UserRole).ToPluralize()).HasQueryFilter(i => !i.IsDeleted);
             builder.HasKey(i => i.Id);
             builder.Property(i => i.IsDeleted).IsRequired();
             builder.Property(i => i.CreationTime);

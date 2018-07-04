@@ -178,7 +178,7 @@ namespace CoreSolution.Tools.Extensions
         /// <summary>
         /// 将单词转换为复数形式
         /// </summary>
-        /// <param name="word"></param>
+        /// <param name="str"></param>
         /// <returns></returns>
         public static string ToPluralize(this string str)
         {
@@ -189,7 +189,7 @@ namespace CoreSolution.Tools.Extensions
         /// <summary>
         /// 将单词转换为单数形式
         /// </summary>
-        /// <param name="word"></param>
+        /// <param name="str"></param>
         /// <returns></returns>
         public static string ToSingularize(this string str)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CoreSolution.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CoreSolution.EntityFrameworkCore.Test
 {

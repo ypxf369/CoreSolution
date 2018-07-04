@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.tools" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CoreSolution.Tools\CoreSolution.Tools.csproj" />
+  </ItemGroup>
+
 </Project>
