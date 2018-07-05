@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreSolution.EntityFramewor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreSolution.Mvc", "CoreSolution.Mvc\CoreSolution.Mvc.csproj", "{B886147F-8056-4A77-8C9E-756C454DFBCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreSolution.Dapper", "CoreSolution.Dapper\CoreSolution.Dapper.csproj", "{F358AE43-0682-4DD2-82E4-D4952055B728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreSolution.Dapper", "CoreSolution.Dapper\CoreSolution.Dapper.csproj", "{F358AE43-0682-4DD2-82E4-D4952055B728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{8DCE996F-D5AA-4441-89FC-952AB87C149F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{F358AE43-0682-4DD2-82E4-D4952055B728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F358AE43-0682-4DD2-82E4-D4952055B728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F358AE43-0682-4DD2-82E4-D4952055B728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DCE996F-D5AA-4441-89FC-952AB87C149F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DCE996F-D5AA-4441-89FC-952AB87C149F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DCE996F-D5AA-4441-89FC-952AB87C149F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DCE996F-D5AA-4441-89FC-952AB87C149F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +143,7 @@ Global
 		{E078B19D-9A12-4661-AEA8-9A850AB064AF} = {23F8D0E3-15F6-42DC-8F51-4AFC0A441340}
 		{B886147F-8056-4A77-8C9E-756C454DFBCB} = {B7C78844-DDA7-4931-A137-DD7F1BFFA7E7}
 		{F358AE43-0682-4DD2-82E4-D4952055B728} = {EE04F88C-9676-47AD-B96F-7AFFBF975639}
+		{8DCE996F-D5AA-4441-89FC-952AB87C149F} = {1971A178-FF91-4FAE-AC16-244B6E2060CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {444FF868-61E4-4D2E-993C-306228042DFB}
