@@ -1,0 +1,10 @@
+﻿{
+  "Connection": {
+    "Host": "127.0.0.1",
+    "UserName": "guest",
+    "Password": "guest"
+  },
+  "DefaultListenQueue": {
+    "Name": "MQ.Dev"
+  }
+}
