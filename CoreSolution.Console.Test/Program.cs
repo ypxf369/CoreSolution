@@ -26,14 +26,14 @@ namespace CoreSolution.Console.Test
             //    Name = "yepeng",
             //    Age = 18
             //};
-            //MessageHandler.Producer<Person>("person", p);
+            //MessageHandler.Producer<Person>("person1", p);
 
             MessageHandler.Consumer((byte[] a) =>
             {
                 var b = a;
                 var c = MessageHandler.Deserializer<Person>(b);
                 System.Console.WriteLine(c.Name);
-            }, "person");
+            }, "person1");
             System.Console.ReadKey();
 
 
@@ -43,7 +43,6 @@ namespace CoreSolution.Console.Test
 
 
     }
-    [Serializable]
     class Person
     {
         public string Name { get; set; }

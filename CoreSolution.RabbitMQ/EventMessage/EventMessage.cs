@@ -8,7 +8,6 @@ namespace CoreSolution.RabbitMQ.EventMessage
     /// <summary>
     /// 表示一个事件消息。
     /// </summary>
-    [Serializable]
     public sealed class EventMessage
     {
         /// <summary>

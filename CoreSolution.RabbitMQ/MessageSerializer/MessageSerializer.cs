@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -20,11 +18,12 @@ namespace CoreSolution.RabbitMQ.MessageSerializer
         /// <returns></returns>
         public T Deserializer<T>(byte[] bytes) where T : class, new()
         {
-            using (var ms = new MemoryStream(bytes))
-            {
-                var formatter = new BinaryFormatter();
-                return formatter.Deserialize(ms) as T;
-            }
+            //using (var ms = new MemoryStream(bytes))
+            //{
+            //    var formatter = new BinaryFormatter();
+            //    return formatter.Deserialize(ms) as T;
+            //}
+            return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(bytes));
         }
 
         /// <summary>
@@ -35,12 +34,14 @@ namespace CoreSolution.RabbitMQ.MessageSerializer
         /// <returns></returns>
         public byte[] SerializerBytes<T>(T message) where T : class, new()
         {
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, message);
-                return ms.GetBuffer();
-            }
+            //using (var ms = new MemoryStream())
+            //{
+            //    var formatter = new BinaryFormatter();
+            //    formatter.Serialize(ms, message);
+            //    return ms.GetBuffer();
+            //}
+            string objStr = JsonConvert.SerializeObject(message);
+            return Encoding.UTF8.GetBytes(objStr);
         }
 
         /// <summary>
