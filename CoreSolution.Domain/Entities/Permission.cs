@@ -5,7 +5,7 @@ using CoreSolution.Domain.Entities.Base;
 
 namespace CoreSolution.Domain.Entities
 {
-    public class Permission : EntityBaseFull
+    public class Permission : EntityBaseFull<int>
     {
         public string Name { get; set; }
         public string Description { get; set; }

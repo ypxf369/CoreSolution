@@ -6,7 +6,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.WebApi.Models.Role
 {
-    public class OutputRoleModel : EntityBaseFullDto
+    public class OutputRoleModel : EntityBaseFullDto<int>
     {
         public string Name { get; set; }
         public string Description { get; set; }

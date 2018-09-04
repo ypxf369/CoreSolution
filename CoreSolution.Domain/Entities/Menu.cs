@@ -5,7 +5,7 @@ using CoreSolution.Domain.Entities.Base;
 
 namespace CoreSolution.Domain.Entities
 {
-    public class Menu : EntityBaseFull
+    public class Menu : EntityBaseFull<int>
     {
         public string Name { get; set; }
         public string Url { get; set; }

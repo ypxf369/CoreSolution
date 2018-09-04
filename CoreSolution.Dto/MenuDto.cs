@@ -5,7 +5,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.Dto
 {
-    public class MenuDto : EntityBaseFullDto
+    public class MenuDto : EntityBaseFullDto<int>
     {
         public string Name { get; set; }
         public string Url { get; set; }

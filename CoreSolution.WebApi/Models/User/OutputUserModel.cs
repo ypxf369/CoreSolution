@@ -6,7 +6,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.WebApi.Models.User
 {
-    public class OutputUserModel : EntityBaseFullDto
+    public class OutputUserModel : EntityBaseFullDto<int>
     {
         public string UserName { get; set; }
         public string RealName { get; set; }

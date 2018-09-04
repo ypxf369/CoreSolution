@@ -5,7 +5,7 @@ using CoreSolution.Domain.Entities.Base;
 
 namespace CoreSolution.Domain.Entities
 {
-    public class UserRole : EntityBaseFull
+    public class UserRole : EntityBaseFull<int>
     {
         public int UserId { get; set; }
         public virtual User User { get; set; }

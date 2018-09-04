@@ -6,7 +6,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.WebApi.Models.Menu
 {
-    public class OutputMenuModel : EntityBaseFullDto
+    public class OutputMenuModel : EntityBaseFullDto<int>
     {
         public string Name { get; set; }
         public string Url { get; set; }

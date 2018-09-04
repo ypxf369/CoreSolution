@@ -5,7 +5,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.Dto
 {
-    public class RoleDto : EntityBaseFullDto
+    public class RoleDto : EntityBaseFullDto<int>
     {
         public string Name { get; set; }
         public string Description { get; set; }

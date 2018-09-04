@@ -5,7 +5,7 @@ using CoreSolution.Domain.Entities.Base;
 
 namespace CoreSolution.Domain.Entities
 {
-    public class User : EntityBaseFull
+    public class User : EntityBaseFull<int>
     {
         public string UserName { get; set; }
         public string RealName { get; set; }

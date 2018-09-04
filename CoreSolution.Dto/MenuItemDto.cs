@@ -5,7 +5,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.Dto
 {
-    public class MenuItemDto : EntityBaseFullDto
+    public class MenuItemDto : EntityBaseFullDto<int>
     {
         public string CustomData { get; set; }
         public string Icon { get; set; }

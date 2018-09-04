@@ -18,9 +18,8 @@ namespace CoreSolution.Domain.Entities.Base
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
-        public virtual TPrimaryKey Id { get; set; }
-        public virtual bool IsDeleted { get; set; }
-
+        public TPrimaryKey Id { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public override bool Equals(object obj)
         {

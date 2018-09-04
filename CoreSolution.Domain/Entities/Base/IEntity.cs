@@ -15,9 +15,8 @@ namespace CoreSolution.Domain.Entities.Base
     /// 定义基类泛型接口Entity，系统中所有Entity必须实现这个接口
     /// </summary>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public interface IEntity<TPrimaryKey>
+    public interface IEntity<TPrimaryKey> : ISoftDelete
     {
         TPrimaryKey Id { get; set; }
-        bool IsDeleted { get; set; }
     }
 }

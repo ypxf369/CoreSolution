@@ -5,7 +5,7 @@ using CoreSolution.Domain.Entities.Base;
 
 namespace CoreSolution.Domain.Entities
 {
-    public class MenuItem : EntityBaseFull
+    public class MenuItem : EntityBaseFull<int>
     {
         /// <summary>
         /// 自定义数据

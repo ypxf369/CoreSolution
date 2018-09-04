@@ -178,8 +178,8 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                         string eName = ePro.Name;
                         switch (eName)
                         {
-                            case nameof(Entity<TPrimaryKey>.Id):
-                            case nameof(Entity<TPrimaryKey>.IsDeleted):
+                            case nameof(IEntity<TPrimaryKey>.Id):
+                            case nameof(IEntity<TPrimaryKey>.IsDeleted):
                             case nameof(ICreationTime.CreationTime):
                                 continue;
                             case nameof(IModificationTime.LastModificationTime):
@@ -232,8 +232,8 @@ namespace CoreSolution.EntityFrameworkCore.Repositories
                         string eName = ePro.Name;
                         switch (eName)
                         {
-                            case nameof(Entity<TPrimaryKey>.Id):
-                            case nameof(Entity<TPrimaryKey>.IsDeleted):
+                            case nameof(IEntity<TPrimaryKey>.Id):
+                            case nameof(IEntity<TPrimaryKey>.IsDeleted):
                             case nameof(ICreationTime.CreationTime):
                                 continue;
                             case nameof(IModificationTime.LastModificationTime):

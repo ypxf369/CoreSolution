@@ -6,7 +6,7 @@ using CoreSolution.Dto.Base;
 
 namespace CoreSolution.WebApi.Models.Permission
 {
-    public class OutputPermissionModel : EntityBaseFullDto
+    public class OutputPermissionModel : EntityBaseFullDto<int>
     {
         public string Name { get; set; }
         public string Description { get; set; }
