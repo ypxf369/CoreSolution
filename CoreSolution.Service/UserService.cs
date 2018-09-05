@@ -82,7 +82,7 @@ namespace CoreSolution.Service
         public async Task<UserDto> GetUserByUserNameOrEmailOrPhoneAsync(string userNameOrEmailOrPhone)
         {
             UserDto userDto;
-            if (userNameOrEmailOrPhone.IsNumeric())
+            if (userNameOrEmailOrPhone.IsNumeric() && userNameOrEmailOrPhone.Length == 11)
             {
                 userDto = await SingleOrDefaultAsync(i => i.PhoneNum == userNameOrEmailOrPhone && i.IsPhoneNumConfirmed);
             }
@@ -92,42 +92,6 @@ namespace CoreSolution.Service
                     i.UserName == userNameOrEmailOrPhone || i.Email == userNameOrEmailOrPhone && i.IsEmailConfirmed);
             }
             return userDto;
-        }
-
-        public async Task<UserDto> GetUserByEmailAsync(string email)
-        {
-            var users = GetAll().Where(i => i.Email == email && i.IsEmailConfirmed);
-            if (!await users.AnyAsync())
-            {
-                throw new Exception($"不存在email={email}的用户");
-            }
-            var user = await users.SingleAsync();
-            user.Password = null;
-            return Mapper.Map<UserDto>(user);
-        }
-
-        public async Task<UserDto> GetUserByPhoneNumAsync(string phoneNum)
-        {
-            var users = GetAll().Where(i => i.PhoneNum == phoneNum && i.IsPhoneNumConfirmed);
-            if (!await users.AnyAsync())
-            {
-                throw new Exception($"不存在phoneNum={phoneNum}的用户");
-            }
-            var user = await users.SingleAsync();
-            user.Password = null;
-            return Mapper.Map<UserDto>(user);
-        }
-
-        public async Task<UserDto> GetUserByUserNameAsync(string userName)
-        {
-            var users = GetAll().Where(i => i.UserName == userName);
-            if (!await users.AnyAsync())
-            {
-                throw new Exception($"不存在name={userName}的用户");
-            }
-            var user = await users.SingleAsync();
-            user.Password = null;
-            return Mapper.Map<UserDto>(user);
         }
     }
 }

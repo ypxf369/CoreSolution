@@ -22,8 +22,5 @@ namespace CoreSolution.IService
         Task<bool> CheckEmailDupAsync(string email);
         Task<LoginResults> CheckUserPasswordAsync(string userNameOrEmailOrPhone, string password);
         Task<UserDto> GetUserByUserNameOrEmailOrPhoneAsync(string userNameOrEmailOrPhone);
-        Task<UserDto> GetUserByEmailAsync(string email);
-        Task<UserDto> GetUserByPhoneNumAsync(string phoneNum);
-        Task<UserDto> GetUserByUserNameAsync(string userName);
     }
 }
