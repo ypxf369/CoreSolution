@@ -12,8 +12,7 @@ namespace CoreSolution.AutoMapper.MapProfile
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>()
-                .ForMember(i => i.Password, i => i.Ignore());
+            CreateMap<User, UserDto>();
 
             CreateMap<UserDto, User>()
                 .ForMember(i => i.IsEmailConfirmed, i => i.Ignore())

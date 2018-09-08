@@ -64,7 +64,7 @@ namespace CoreSolution.Service
             var userDto = await GetUserByUserNameOrEmailOrPhoneAsync(userNameOrEmailOrPhone);
             if (userDto != null)
             {
-                if (userDto.Password == (password.ToMd5() + userDto.Salt).ToMd5())
+                if (userDto.Password.Equals((password.ToMd5() + userDto.Salt).ToMd5(), StringComparison.OrdinalIgnoreCase))
                 {
                     return LoginResults.Success;
                 }
